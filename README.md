@@ -31,6 +31,23 @@ NEXT_PUBLIC_USE_MOCKS=false
 O cliente Axios fica em `src/services/api.ts`. O token e enviado via
 `Authorization: Bearer <token>` quando existe sessao salva.
 
+## Tema
+
+As cores do sistema ficam centralizadas em `src/styles/theme.css`.
+
+Use tokens semanticos nos componentes, por exemplo:
+
+- `bg-brand`
+- `hover:bg-brand-hover`
+- `text-muted-foreground`
+- `text-destructive`
+- `bg-govbr`
+- `from-brand-hero-from`
+- `to-brand-hero-to`
+
+Para mudar a identidade visual, altere as variaveis CSS desse arquivo em vez de
+usar classes diretas como `blue-600` ou valores hexadecimais nos componentes.
+
 ## Rotas iniciais
 
 - `/`

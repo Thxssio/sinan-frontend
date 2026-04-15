@@ -71,12 +71,12 @@ export default function DashboardPage() {
                   {
                     key: "notifications",
                     label: "Notificacoes",
-                    color: "#2563eb",
+                    color: "var(--chart-1)",
                   },
                   {
                     key: "completed",
                     label: "Concluidas",
-                    color: "#16a34a",
+                    color: "var(--chart-2)",
                   },
                 ]}
               />
@@ -98,7 +98,7 @@ export default function DashboardPage() {
                 xKey="status"
                 valueKey="total"
                 label="Total"
-                color="#f59e0b"
+                color="var(--chart-3)"
                 className="h-72 w-full"
               />
             )}
