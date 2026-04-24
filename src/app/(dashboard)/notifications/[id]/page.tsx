@@ -19,6 +19,8 @@ import {
   formatNotificationDate,
   formatNotificationFieldValue,
   getNotificationTypeDefinition,
+  type NotificationFieldDefinition,
+  type NotificationSectionDefinition,
 } from "@/lib/notification-types"
 import { notificationService } from "@/services/notification.service"
 import type { NotificationStatus } from "@/types/notification"
@@ -196,7 +198,7 @@ export default function NotificationDetailsPage() {
                 </div>
               </section>
 
-              {definition.sections.map((section) => (
+              {definition.sections.map((section: NotificationSectionDefinition) => (
                 <section
                   key={section.id}
                   className="grid gap-4 rounded-2xl border border-border bg-card p-5"
@@ -211,7 +213,7 @@ export default function NotificationDetailsPage() {
                   <div
                     className={`grid gap-4 ${getSectionGridClass(section.columns)}`}
                   >
-                    {section.fields.map((field) => (
+                    {section.fields.map((field: NotificationFieldDefinition) => (
                       <div
                         key={field.name}
                         className={

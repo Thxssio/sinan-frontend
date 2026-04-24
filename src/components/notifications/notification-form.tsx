@@ -18,6 +18,8 @@ import {
   getNotificationTypeDefinition,
   notificationStatusOptions,
   notificationTypeOptions,
+  type NotificationFieldDefinition,
+  type NotificationSectionDefinition,
 } from "@/lib/notification-types"
 import {
   notificationFormSchema,
@@ -538,7 +540,7 @@ export function NotificationForm({
 
                 {form.formState.errors.patient_id ? (
                   <p className="text-sm text-destructive">
-                    {form.formState.errors.patient_id.message}
+                    {String(form.formState.errors.patient_id.message ?? "")}
                   </p>
                 ) : null}
               </div>
@@ -639,7 +641,7 @@ export function NotificationForm({
           </div>
         </section>
 
-        {definition.sections.map((section) => (
+        {definition.sections.map((section: NotificationSectionDefinition) => (
           <section
             key={section.id}
             className="grid gap-4 rounded-2xl border border-border bg-card p-5"
@@ -652,7 +654,7 @@ export function NotificationForm({
             </div>
 
             <div className={`grid gap-4 ${getSectionGridClass(section.columns)}`}>
-              {section.fields.map((field) => {
+              {section.fields.map((field: NotificationFieldDefinition) => {
                 const name = `form_data.${field.name}` as never
 
                 return (

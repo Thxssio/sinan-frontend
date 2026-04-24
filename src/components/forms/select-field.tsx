@@ -25,7 +25,7 @@ type SelectFieldProps<TFieldValues extends FieldValues> = {
   placeholder?: string
   description?: string
   disabled?: boolean
-  options: Array<{
+  options: ReadonlyArray<{
     label: string
     value: string
   }>
