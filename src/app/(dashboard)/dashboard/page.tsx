@@ -22,7 +22,7 @@ export default function DashboardPage() {
   const dashboardQuery = useDashboard()
   const summary = dashboardQuery.data
 
-  if (dashboardQuery.isLoading && !summary) {
+  if (dashboardQuery.isPending && !summary) {
     return <DashboardLoadingState />
   }
 

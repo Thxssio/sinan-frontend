@@ -21,7 +21,7 @@ export default function ReportsPage() {
           <CardTitle>Resumo</CardTitle>
         </CardHeader>
         <CardContent>
-          {reportQuery.isLoading ? (
+          {reportQuery.isPending ? (
             <Skeleton className="h-24 w-full" />
           ) : (
             <dl className="grid gap-3 text-sm sm:grid-cols-3">

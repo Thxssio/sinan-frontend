@@ -137,7 +137,7 @@ export default function NotificationDetailsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6">
-          {notificationQuery.isLoading ? (
+          {notificationQuery.isPending && notificationQuery.isFetching ? (
             <Skeleton className="h-48 w-full" />
           ) : notification && definition && workflow ? (
             <>
@@ -227,7 +227,7 @@ export default function NotificationDetailsPage() {
                           {formatNotificationFieldValue(
                             field,
                             notification.form_data[
-                              field.name as keyof typeof notification.form_data
+                            field.name as keyof typeof notification.form_data
                             ]
                           )}
                         </p>

@@ -48,7 +48,7 @@ export default function PatientsPage() {
       />
       <Card>
         <CardContent>
-          {patientsQuery.isLoading ? (
+          {patientsQuery.isPending ? (
             <Skeleton className="h-32 w-full" />
           ) : (
             <DataTable

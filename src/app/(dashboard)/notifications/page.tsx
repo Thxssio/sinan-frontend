@@ -67,7 +67,7 @@ export default function NotificationsPage() {
       />
       <Card>
         <CardContent>
-          {notificationsQuery.isLoading ? (
+          {notificationsQuery.isPending ? (
             <div className="grid gap-3">
               {Array.from({ length: 5 }).map((_, index) => (
                 <Skeleton key={index} className="h-10 w-full" />

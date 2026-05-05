@@ -48,7 +48,7 @@ export default function UnitsPage() {
       />
       <Card>
         <CardContent>
-          {unitsQuery.isLoading ? (
+          {unitsQuery.isPending ? (
             <Skeleton className="h-32 w-full" />
           ) : (
             <DataTable

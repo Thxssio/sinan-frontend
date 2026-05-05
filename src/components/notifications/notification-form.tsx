@@ -153,19 +153,19 @@ function mergeAidsPatientSnapshot(
 
   const patient_name =
     formData.patient_name === "" ||
-    formData.patient_name === previousSnapshot?.patient_name
+      formData.patient_name === previousSnapshot?.patient_name
       ? nextSnapshot.patient_name
       : formData.patient_name
 
   const patient_cpf =
     formData.patient_cpf === "" ||
-    formData.patient_cpf === previousSnapshot?.patient_cpf
+      formData.patient_cpf === previousSnapshot?.patient_cpf
       ? nextSnapshot.patient_cpf
       : formData.patient_cpf
 
   const patient_birth_date =
     formData.patient_birth_date === "" ||
-    formData.patient_birth_date === previousSnapshot?.patient_birth_date
+      formData.patient_birth_date === previousSnapshot?.patient_birth_date
       ? nextSnapshot.patient_birth_date
       : formData.patient_birth_date
 
@@ -257,8 +257,8 @@ export function NotificationForm({
   const normalizedPatientSearch = deferredPatientSearch.trim()
   const filteredPatients = normalizedPatientSearch
     ? patients
-        .filter((patient) => matchesPatientSearch(patient, normalizedPatientSearch))
-        .slice(0, 8)
+      .filter((patient) => matchesPatientSearch(patient, normalizedPatientSearch))
+      .slice(0, 8)
     : []
 
   React.useEffect(() => {
@@ -288,10 +288,10 @@ export function NotificationForm({
       patientMode === "existing"
         ? buildPatientSnapshot(selectedPatient)
         : buildNewPatientSnapshot({
-            name: newPatientName,
-            document: newPatientDocument,
-            birth_date: newPatientBirthDate,
-          })
+          name: newPatientName,
+          document: newPatientDocument,
+          birth_date: newPatientBirthDate,
+        })
 
     if (!nextSnapshot) {
       lastSyncedPatientSnapshotRef.current = null
@@ -477,11 +477,11 @@ export function NotificationForm({
                       onChange={(event) => setPatientSearch(event.currentTarget.value)}
                       placeholder="Digite nome ou CPF do paciente"
                       className="pl-9"
-                      disabled={patientsQuery.isLoading}
+                      disabled={patientsQuery.isPending}
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {patientsQuery.isLoading
+                    {patientsQuery.isPending
                       ? "Carregando pacientes..."
                       : "A busca usa os pacientes ja carregados na tela."}
                   </p>
@@ -588,9 +588,9 @@ export function NotificationForm({
               placeholder="Selecione uma unidade"
               options={unitOptions}
               parseValue={Number}
-              disabled={unitsQuery.isLoading}
+              disabled={unitsQuery.isPending}
               description={
-                unitsQuery.isLoading ? "Carregando unidades..." : undefined
+                unitsQuery.isPending ? "Carregando unidades..." : undefined
               }
             />
             <SelectField
@@ -720,8 +720,8 @@ export function NotificationForm({
           disabled={
             isSubmitting ||
             createPatient.isPending ||
-            patientsQuery.isLoading ||
-            unitsQuery.isLoading
+            patientsQuery.isPending ||
+            unitsQuery.isPending
           }
         >
           <Save data-icon="inline-start" />
