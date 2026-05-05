@@ -47,7 +47,7 @@ type UnionToIntersection<T> = (
   : never
 
 type SectionFieldShape<TSection extends NotificationSectionDefinition> = {
-  [Field in TSection["fields"][number] as Field["name"]]: Field["schema"]
+  [Field in TSection["fields"][number]as Field["name"]]: Field["schema"]
 }
 
 export type NotificationSectionShape<
@@ -59,10 +59,10 @@ export type NotificationSectionShape<
 export type NotificationFormDefaults<
   TSections extends readonly NotificationSectionDefinition[],
 > = {
-  [Key in keyof NotificationSectionShape<TSections>]: z.input<
-    NotificationSectionShape<TSections>[Key]
-  >
-}
+    [Key in keyof NotificationSectionShape<TSections>]: z.input<
+      NotificationSectionShape<TSections>[Key]
+    >
+  }
 
 export type NotificationTypeDefinition<
   TSlug extends string = string,
