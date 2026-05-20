@@ -74,6 +74,13 @@ const sections = [
             defaultValue: "",
         },
         {
+            name: "nu_sus_card",
+            label: "Número do Cartão SUS",
+            kind: "text",
+            schema: optionalTextSchema,
+            defaultValue: "",
+        },
+        {
             name: "residence_city",
             label: "Municipio",
             kind: "text",
@@ -88,13 +95,7 @@ const sections = [
             defaultValue: "",
         },
     ],
-      {
-        name: "nu_sus_card",
-        label: "Número do Cartão SUS",
-        kind: "text",
-        schema: optionalTextSchema,
-        defaultValue: "",
-      },
+},
   {
     id: "complementary_data",
     title: "Dados Complementares do Caso",

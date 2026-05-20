@@ -35,7 +35,7 @@ import type {
 import type { Patient } from "@/types/patient"
 import type { Unit } from "@/types/unit"
 
-const defaultNotificationType: NotificationTypeSlug = "aids"
+const defaultNotificationType = "aids" satisfies NotificationTypeSlug
 const emptyPatients: Patient[] = []
 const emptyUnits: Unit[] = []
 const emptyNewPatient: NotificationFormSchema["new_patient"] = {

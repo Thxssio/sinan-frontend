@@ -36,6 +36,18 @@ export const notificationSchema = z.discriminatedUnion(
       notification_type_slug: z.literal("venomous_animal"),
       form_data: notificationTypeDefinitions.venomous_animal.formSchema,
     }),
+    notificationBaseSchema.extend({
+      notification_type_slug: z.literal("botulism"),
+      form_data: notificationTypeDefinitions.botulism.formSchema,
+    }),
+    notificationBaseSchema.extend({
+      notification_type_slug: z.literal("cholera"),
+      form_data: notificationTypeDefinitions.cholera.formSchema,
+    }),
+    notificationBaseSchema.extend({
+      notification_type_slug: z.literal("whooping_cough"),
+      form_data: notificationTypeDefinitions.whooping_cough.formSchema,
+    }),
   ]
 )
 
@@ -48,6 +60,18 @@ export const notificationFormSchema = z
     notificationFormBaseSchema.extend({
       notification_type_slug: z.literal("venomous_animal"),
       form_data: notificationTypeDefinitions.venomous_animal.draftFormSchema,
+    }),
+    notificationFormBaseSchema.extend({
+      notification_type_slug: z.literal("botulism"),
+      form_data: notificationTypeDefinitions.botulism.draftFormSchema,
+    }),
+    notificationFormBaseSchema.extend({
+      notification_type_slug: z.literal("cholera"),
+      form_data: notificationTypeDefinitions.cholera.draftFormSchema,
+    }),
+    notificationFormBaseSchema.extend({
+      notification_type_slug: z.literal("whooping_cough"),
+      form_data: notificationTypeDefinitions.whooping_cough.draftFormSchema,
     }),
   ])
   .superRefine((values, ctx) => {
