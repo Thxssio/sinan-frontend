@@ -237,3 +237,31 @@ export const finalDiagnosisOptions = [
   { label: "Obito por outra causa", value: "death_other_cause" },
   { label: "Outro desfecho", value: "other" },
 ] satisfies NotificationFieldOption[]
+
+/// Opções adicionadas para a ficha Anti-rábica
+
+export const woundsOptions = [
+  { label: "Único", value: "unique" },
+  { label: "Múltiplo", value: "multiple" },
+  { label: "Sem ferimento", value: "without_wound" },
+  { label: "Ignorado", value: "unknown" },
+] satisfies NotificationFieldOption[]
+
+export const animalSpeciesOptions = [
+  { value: "canina", label: "Canina" },
+  { value: "felina", label: "Felina" },
+  { value: "quiroptera", label: "Quiróptera (Morcego)" },
+  { value: "primata", label: "Primata (Macaco)" },
+  { value: "raposa", label: "Raposa" },
+  { value: "herbivoro", label: "Herbívoro doméstico" },
+  { value: "outra", label: "Outra" },
+]
+
+export const animalConditionOptions = [
+  { value: "sadio", label: "Sadio" },
+  { value: "suspeito", label: "Suspeito" },
+  { value: "raivoso", label: "Raivoso" },
+  { value: "morto_desaparecido", label: "Morto/Desaparecido" },
+]
+
+///
