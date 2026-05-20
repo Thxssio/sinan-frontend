@@ -283,7 +283,7 @@ const treatmentSection = {
         options: yesNoUnknownOptions,
       },
     ],
-  },
+} satisfies NotificationSectionDefinition;
 
 const animalAgressorSection = {
     id: "animal_aggressor",
@@ -319,4 +319,21 @@ const animalAgressorSection = {
         options: yesNoUnknownOptions,
       },
     ],
-  },
+} satisfies NotificationSectionDefinition;
+
+const sections = [
+    patientSection,
+    exposureTypeSection,
+    locationSection,
+    woundSection,
+    treatmentSection,
+    animalAgressorSection,
+] as const satisfies readonly NotificationSectionDefinition[];
+
+export const antiRabiesNotificationDefinition = defineNotificationType({
+    id: 9,
+    slug: "anti_rabies",
+    label: "Atendimento Antirrábico",
+    description: "Notificação de atendimento antirrábico humano após exposição ao vírus rábico.",
+    sections,
+});
