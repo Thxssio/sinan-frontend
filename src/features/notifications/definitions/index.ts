@@ -10,6 +10,7 @@ import { yellowFeverNotificationDefinition } from "@/features/notifications/defi
 import { venomousAnimalNotificationDefinition } from "@/features/notifications/definitions/venomous-animal"
 import { whoopingCoughNotificationDefinition } from "@/features/notifications/definitions/whooping-cough"
 import { occupationalDermatosesNotificationDefinition } from "@/features/notifications/definitions/occupational_dermatoses"
+import { biologicalMaterialExposureNotificationDefinition } from "./exposure_to_biological_material"
 export {
   aidsChildrenNotificationDefinition,
   antiRabiesNotificationDefinition,
@@ -22,7 +23,8 @@ export {
   yellowFeverNotificationDefinition,
   venomousAnimalNotificationDefinition,
   whoopingCoughNotificationDefinition,
-  occupationalDermatosesNotificationDefinition
+  occupationalDermatosesNotificationDefinition,
+  biologicalMaterialExposureNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
@@ -38,7 +40,8 @@ export const notificationTypeDefinitionList = [
   dengueChikungunyaNotificationDefinition,
   antiRabiesNotificationDefinition,
   chikungunyaFeverNotificationDefinition,
-  occupationalDermatosesNotificationDefinition
+  occupationalDermatosesNotificationDefinition,
+  biologicalMaterialExposureNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
@@ -53,5 +56,6 @@ export const notificationTypeDefinitions = {
   dengue_chikungunya: dengueChikungunyaNotificationDefinition,
   anti_rabies: antiRabiesNotificationDefinition,
   chikungunya_fever: chikungunyaFeverNotificationDefinition,
-  occupational_dermatoses: occupationalDermatosesNotificationDefinition
+  occupational_dermatoses: occupationalDermatosesNotificationDefinition,
+  biological_material_exposure: biologicalMaterialExposureNotificationDefinition
 } as const
