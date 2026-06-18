@@ -10,7 +10,8 @@ import { yellowFeverNotificationDefinition } from "@/features/notifications/defi
 import { venomousAnimalNotificationDefinition } from "@/features/notifications/definitions/venomous-animal"
 import { whoopingCoughNotificationDefinition } from "@/features/notifications/definitions/whooping-cough"
 import { occupationalDermatosesNotificationDefinition } from "@/features/notifications/definitions/occupational_dermatoses"
-import { biologicalMaterialExposureNotificationDefinition } from "./exposure_to_biological_material"
+import { biologicalMaterialExposureNotificationDefinition } from "@/features/notifications/definitions/exposure_to_biological_material"
+import { lerDortNotificationDefinition } from "@/features/notifications/definitions/ler_dort"
 export {
   aidsChildrenNotificationDefinition,
   antiRabiesNotificationDefinition,
@@ -24,7 +25,8 @@ export {
   venomousAnimalNotificationDefinition,
   whoopingCoughNotificationDefinition,
   occupationalDermatosesNotificationDefinition,
-  biologicalMaterialExposureNotificationDefinition
+  biologicalMaterialExposureNotificationDefinition,
+  lerDortNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
@@ -41,7 +43,8 @@ export const notificationTypeDefinitionList = [
   antiRabiesNotificationDefinition,
   chikungunyaFeverNotificationDefinition,
   occupationalDermatosesNotificationDefinition,
-  biologicalMaterialExposureNotificationDefinition
+  biologicalMaterialExposureNotificationDefinition,
+  lerDortNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
@@ -57,5 +60,6 @@ export const notificationTypeDefinitions = {
   anti_rabies: antiRabiesNotificationDefinition,
   chikungunya_fever: chikungunyaFeverNotificationDefinition,
   occupational_dermatoses: occupationalDermatosesNotificationDefinition,
-  biological_material_exposure: biologicalMaterialExposureNotificationDefinition
+  biological_material_exposure: biologicalMaterialExposureNotificationDefinition,
+  ler_dort: lerDortNotificationDefinition
 } as const
