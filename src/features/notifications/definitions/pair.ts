@@ -51,9 +51,9 @@ const generalSection = {
             label: "Agravo/doença",
             kind: "select",
             schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "ler_dort",
+            defaultValue: "pair",
             options: [
-                { label: "LER/DORT", value: "ler_dort" },
+                { label: "PAIR", value: "pair" },
             ],
         },
         {
@@ -61,7 +61,7 @@ const generalSection = {
             label: "Código (CID10)",
             kind: "text",
             schema: optionalTextSchema,
-            defaultValue: "Z57.9",
+            defaultValue: "H83.3",
         },
         {
             name: "dt_notification",
@@ -362,33 +362,44 @@ const epidemiologicalBackgroundSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. CONCLUSÃO / INVESTIGAÇÃO CLÍNICA E EXPOSIÇÃO
+// 7. CONCLUSÃO / PAIR
 // -----------------------------------------------------------------------------
-const clinicalAndExposureSection = {
-    id: "clinical_and_exposure",
-    title: "Sinais, Sintomas e Exposição no Trabalho",
-    description: "Sinais e sintomas apresentados pelo paciente e fatores de risco no trabalho.",
+const conclusionPairSection = {
+    id: "conclusion_pair",
+    title: "Conclusão / PAIR",
+    description: "Tipos de ruído, exposições concomitantes e sintomas.",
     columns: 3,
     fields: [
-        // Sinais e Sintomas
-        { name: "symp_sensory_alteration", label: "Sinais e Sintomas: Alteração de sensibilidade", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_muscle_weakness", label: "Sinais e Sintomas: Diminuição de força muscular", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_movement_decrease", label: "Sinais e Sintomas: Diminuição do movimento", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_movement_limitation", label: "Sinais e Sintomas: Limitação de movimentos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_phlogistic_signs", label: "Sinais e Sintomas: Sinais flogísticos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_pain", label: "Sinais e Sintomas: Dor", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_other", label: "Sinais e Sintomas: Outro", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        // Tipo de Ruído Predominante
+        {
+            name: "predominant_noise_type",
+            label: "Tipo de Ruído Predominante",
+            kind: "select",
+            schema: optionalTextSchema,
+            defaultValue: "9",
+            options: [
+                { label: "1 - Ruído Contínuo", value: "1" },
+                { label: "2 - Ruído Intermitente", value: "2" },
+                { label: "3 - Ambos", value: "3" },
+                { label: "9 - Ignorado", value: "9" },
+            ]
+        },
+
+        // Exposição Concomitante a Ruído e:
+        { name: "exp_toluene_solvent", label: "Exposição Concomitante a Ruído e: Solvente a Base de Tolueno", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "exp_heavy_metals", label: "Exposição Concomitante a Ruído e: Metais Pesados", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "exp_ototoxic_medications", label: "Exposição Concomitante a Ruído e: Medicamentos Ototóxicos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "exp_toxic_gases", label: "Exposição Concomitante a Ruído e: Gases Tóxicos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "exp_other_concomitant", label: "Exposição Concomitante a Ruído e: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "exp_other_concomitant_specify", label: "Outros (Especifique)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        // Sintomas
+        { name: "symp_tinnitus", label: "Sintomas: Zumbido", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "symp_dizziness", label: "Sintomas: Tontura", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "symp_speech_difficulty", label: "Sintomas: Dificuldade p/ compreensão da fala", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "symp_headache", label: "Sintomas: Cefaléia", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "symp_other", label: "Sintomas: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "symp_other_specify", label: "Outro Sintoma (Especifique)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-
-        // Limitação e incapacidade
-        { name: "task_limitation", label: "Limitação e incapacidade para o exercício de tarefas", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-
-        // Exposição no local de trabalho
-        { name: "exp_production_bonus", label: "Exposição à: Prêmios de produção", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_repetitive_movements", label: "Exposição à: Movimentos repetitivos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_stressful_environment", label: "Exposição à: Ambiente estressante", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_pause_time", label: "Exposição à: Há tempo de pausas", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_long_journey", label: "Exposição à: Jornada de trabalho de mais de 6 horas", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
 
         // Diagnóstico Específico
         { name: "specific_diagnosis", label: "Diagnóstico Específico", kind: "text", schema: optionalTextSchema, defaultValue: "" },
@@ -407,8 +418,8 @@ const conductAndEvolutionSection = {
     fields: [
         // Afastamento e Resultados
         { name: "work_absence", label: "Houve afastamento do trabalho para tratamento?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "absence_time_unit", label: "Tempo de Afastamento (Unidade)", kind: "select", schema: optionalTextSchema, defaultValue: "", options: timeUnitOptions },
-        { name: "absence_time_value", label: "Tempo de Afastamento (Valor)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "absence_time_unit", label: "Tempo de Afastamento do Trabalho para Tratamento (Unidade)", kind: "select", schema: optionalTextSchema, defaultValue: "", options: timeUnitOptions },
+        { name: "absence_time_value", label: "Tempo de Afastamento do Trabalho para Tratamento (Valor)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
         {
             name: "with_absence_evolution",
             label: "Com Afastamento do Trabalho",
@@ -429,9 +440,9 @@ const conductAndEvolutionSection = {
         { name: "conduct_risk_removal", label: "Conduta Geral: Afastamento do agente do risco com mudança de função e/ou posto de trabalho", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
         { name: "conduct_work_org_change", label: "Conduta Geral: Adoção de mudança na organização do trabalho", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
         { name: "conduct_collective_protection", label: "Conduta Geral: Adoção de proteção coletiva", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
+        { name: "conduct_workplace_removal", label: "Conduta Geral: Afastamento do local de trabalho", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
         { name: "conduct_individual_protection", label: "Conduta Geral: Adoção de proteção individual", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
         { name: "conduct_none", label: "Conduta Geral: Nenhum", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
-        { name: "conduct_workplace_removal", label: "Conduta Geral: Afastamento do local de trabalho", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
         { name: "conduct_others", label: "Conduta Geral: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
 
         // Evolução do Caso
@@ -457,7 +468,7 @@ const conductAndEvolutionSection = {
         // Data Óbito
         {
             name: "dt_death",
-            label: "Se Óbito, Data",
+            label: "Data do óbito",
             kind: "date",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -497,14 +508,14 @@ const sections = [
     complementarySection,
     companySection,
     epidemiologicalBackgroundSection,
-    clinicalAndExposureSection,
+    conclusionPairSection,
     conductAndEvolutionSection,
 ] as const satisfies readonly NotificationSectionDefinition[];
 
-export const lerDortNotificationDefinition = defineNotificationType({
-    id: 12,
-    slug: "ler_dort",
-    label: "LER/DORT",
-    description: `Todas as doenças, lesões e síndromes que afetam o sistema músculo esquelético, causadas, mantidas ou agravadas pelo trabalho (CID-10 G50-59, G90-99, M00-99). Em geral caracteriza-se pela ocorrência de vários sintomas inespecíficos, concomitantes ou não, que podem aparecer aos poucos, tais como dor crônica, parestesia, fadiga muscular, manifestando-se principalmente no pescoço, coluna vertebral, cintura escapular, membros superiores ou inferiores.`,
+export const pairNotificationDefinition = defineNotificationType({
+    id: 13,
+    slug: "pair",
+    label: "PAIR",
+    description: `Todos os casos de Perda Auditiva Induzida por Ruído (PAIR) caracterizados pela diminuição gradual da acuidade auditiva, decorrente da exposição continuada ao ruído, associado ou não a substâncias químicas, no ambiente de trabalho. É sempre neurossensorial, geralmente bilateral, irreversível e passível de não progressão uma vez cessada a exposição ao ruído.`,
     sections,
 });
