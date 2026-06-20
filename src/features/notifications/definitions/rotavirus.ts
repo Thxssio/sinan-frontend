@@ -51,10 +51,9 @@ const generalSection = {
             label: "Agravo/doença",
             kind: "select",
             schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "",
+            defaultValue: "ROTAVÍRUS",
             options: [
-                { label: "1 - SARAMPO", value: "1" },
-                { label: "2 - RUBÉOLA", value: "2" },
+                { label: "ROTAVÍRUS", value: "ROTAVÍRUS" },
             ],
         },
         {
@@ -62,7 +61,7 @@ const generalSection = {
             label: "Código (CID10)",
             kind: "text",
             schema: optionalTextSchema,
-            defaultValue: "B09",
+            defaultValue: "A080",
         },
         {
             name: "dt_notification",
@@ -250,7 +249,7 @@ const residenceSection = {
             options: [
                 { label: "1 - Urbana", value: "1" },
                 { label: "2 - Rural", value: "2" },
-                { label: "3 - Periurbana", value: "3" },
+                { label: "3 - Urbana/Rural", value: "3" },
                 { label: "9 - Ignorado", value: "9" },
             ],
         },
@@ -259,171 +258,105 @@ const residenceSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 4. DADOS COMPLEMENTARES DO CASO
+// 4. DADOS CLÍNICOS E COMPLEMENTARES
 // -----------------------------------------------------------------------------
-const complementarySection = {
-    id: "complementary",
-    title: "Dados Complementares do Caso",
-    description: "Investigação, vacinação e sinais/sintomas do paciente.",
+const clinicalSection = {
+    id: "clinical",
+    title: "Dados Complementares do Caso / Sinais e Sintomas",
+    description: "Informações clínicas e sinais apresentados pelo paciente.",
     columns: 3,
     fields: [
-        { name: "dt_investigation", label: "Data da Investigação", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-        { name: "occupation", label: "Ocupação", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "took_vaccine", label: "Tomou Vacina Contra Sarampo e Rubéola (dupla ou triviral)", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "dt_last_dose", label: "Data da Última Dose", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+        { name: "symptom_vomiting", label: "Vômitos", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "vomiting_episodes", label: "Vômitos - N.º de episódios/24 horas", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "vomiting_duration", label: "Vômitos - Duração (dias)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "symptom_fever", label: "Febre", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "fever_temperature", label: "Febre - Temperatura °C", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "symptom_diarrhea", label: "Diarréia", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "diarrhea_episodes", label: "Diarréia - N.º de episódios/24 horas", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "diarrhea_duration", label: "Diarréia - Duração (dias)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "blood_in_stool", label: "Presença de sangue nas fezes", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+
+        { name: "breastfeeding", label: "Aleitamento materno", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
         {
-            name: "contact_suspected_case",
-            label: "Contato Com Caso Suspeito ou Confirmado (até 23 dias antes)",
+            name: "breastfeeding_type",
+            label: "Se sim (Tipo)",
             kind: "select",
             schema: optionalTextSchema,
-            defaultValue: "9",
+            defaultValue: "",
             options: [
-                { label: "1 - Domicílio", value: "1" },
-                { label: "2 - Vizinhança", value: "2" },
-                { label: "3 - Trabalho", value: "3" },
-                { label: "4 - Creche/Escola", value: "4" },
-                { label: "5 - Posto de Saúde/Hospital", value: "5" },
-                { label: "6 - Outro Estado/Município", value: "6" },
-                { label: "7 - Sem História de Contato", value: "7" },
-                { label: "8 - Outro país", value: "8" },
-                { label: "9 - Ignorado", value: "9" },
-            ],
+                { label: "1 - Exclusivo", value: "1" },
+                { label: "2 - Misto", value: "2" }
+            ]
         },
-        { name: "contact_name", label: "Nome do Contato", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "contact_address", label: "Endereço do contato", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "dt_exanthema_start", label: "Data do Início do Exantema", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-        { name: "dt_fever_start", label: "Data do Início da Febre", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-
-        // Outros Sinais e Sintomas
-        { name: "symptom_cough", label: "Tosse", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_arthralgia", label: "Artralgia/Artrite", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_coryza", label: "Coriza", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_ganglia", label: "Presença de Gânglios Retroauriculares/Occiptais", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_conjunctivitis", label: "Conjuntivite", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_retro_ocular_pain", label: "Dor Retro-Ocular", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "breastfeeding_duration", label: "Até quando? Mês(es)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
     ],
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 5. ATENDIMENTO
+// 5. ANTECEDENTES VACINAIS
 // -----------------------------------------------------------------------------
-const attendanceSection = {
-    id: "attendance",
-    title: "Atendimento",
-    description: "Informações sobre hospitalização do paciente.",
+const vaccinationSection = {
+    id: "vaccination",
+    title: "Antecedentes Vacinais",
+    description: "Informações sobre vacinação do paciente contra rotavírus.",
     columns: 3,
     fields: [
-        { name: "hospitalization_occurred", label: "Ocorreu Hospitalização", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "dt_hospitalization", label: "Data da Internação", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-        { name: "hospital_state", label: "UF", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "hospital_city", label: "Município do Hospital", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "hospital_name", label: "Nome do Hospital", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-    ]
+        { name: "rotavirus_vaccine", label: "Vacina contra Rotavírus", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+
+        { name: "dt_dose_1", label: "1ª dose - Data da aplicação", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+        { name: "lot_dose_1", label: "1ª dose - Lote", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "lab_dose_1", label: "1ª dose - Laboratório produtor", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "dt_dose_2", label: "2ª dose - Data da aplicação", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+        { name: "lot_dose_2", label: "2ª dose - Lote", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "lab_dose_2", label: "2ª dose - Laboratório produtor", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "vop_same_day", label: "A vacina VOP foi administrada no mesmo dia da vacina contra rotavírus?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "dt_last_vop", label: "Data da última dose de VOP", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+    ],
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
 // 6. DADOS DO LABORATÓRIO
 // -----------------------------------------------------------------------------
-const resultOptions = [
-    { label: "1 - Reagente", value: "1" },
-    { label: "2 - Não Reagente", value: "2" },
-    { label: "3 - Inconclusivo", value: "3" },
-    { label: "4 - Não Realizado", value: "4" },
-];
-
 const laboratorySection = {
     id: "laboratory",
     title: "Dados do Laboratório",
-    description: "Exame sorológico e isolamento viral.",
+    description: "Informações de amostras e exames laboratoriais.",
     columns: 3,
     fields: [
-        { name: "dt_first_sample", label: "Data da Coleta da 1ª Amostra (S1)", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-        { name: "dt_second_sample", label: "Data da Coleta da 2ª Amostra (S2)", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+        { name: "dt_stool_sample", label: "Data da coleta da amostra de fezes", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+        { name: "rotavirus_identified", label: "Rotavírus identificado na amostra", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
+        { name: "genotype_g", label: "Qual foi o genótipo G:", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "genotype_p", label: "Qual foi o genótipo P:", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
-        // Exame Sorológico - Resultados
-        { name: "result_measles_igm", label: "Sarampo IgM", kind: "select", schema: optionalTextSchema, defaultValue: "", options: resultOptions },
-        { name: "result_measles_igg", label: "Sarampo IgG", kind: "select", schema: optionalTextSchema, defaultValue: "", options: resultOptions },
-        { name: "result_rubella_igm", label: "Rubéola IgM", kind: "select", schema: optionalTextSchema, defaultValue: "", options: resultOptions },
-        { name: "result_rubella_igg", label: "Rubéola IgG", kind: "select", schema: optionalTextSchema, defaultValue: "", options: resultOptions },
-        { name: "result_others_igm", label: "Outras Exantemáticas IgM", kind: "select", schema: optionalTextSchema, defaultValue: "", options: resultOptions },
-        { name: "result_others_igg", label: "Outras Exantemáticas IgG", kind: "select", schema: optionalTextSchema, defaultValue: "", options: resultOptions },
+        { name: "other_virus", label: "Outro vírus identificado na amostra", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "which_virus", label: "Se sim, qual", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
-        // Isolamento Viral
-        { name: "sample_blood", label: "Amostra clínica: Sangue Total", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
-        { name: "sample_secretion", label: "Amostra clínica: Secreção Nasofaríngea", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
-        { name: "sample_urine", label: "Amostra clínica: Urina", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
-        { name: "sample_liquor", label: "Amostra clínica: Líquor", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
+        { name: "bacteria_identified", label: "Bactéria identificada na amostra", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "which_bacteria", label: "Se sim, qual bactéria", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
-        {
-            name: "viral_etiology",
-            label: "Etiologia Viral",
-            kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "",
-            options: [
-                { label: "1 - Vírus Sarampo Selvagem", value: "1" },
-                { label: "2 - Vírus Sarampo Vacinal", value: "2" },
-                { label: "3 - Vírus Rubéola Selvagem", value: "3" },
-                { label: "4 - Vírus Rubéola Vacinal", value: "4" },
-                { label: "5 - Dengue", value: "5" },
-                { label: "6 - Herpes Vírus Tipo 6", value: "6" },
-                { label: "7 - Parvovírus B19", value: "7" },
-                { label: "8 - Enterovírus", value: "8" },
-                { label: "9 - Outras", value: "9" },
-                { label: "10 - Não detectado", value: "10" },
-            ],
-        },
+        { name: "parasite_identified", label: "Parasita identificado na amostra", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "which_parasite", label: "Se sim, qual parasita", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "medication_used", label: "Uso de medicamentos antes da coleta", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "which_medication", label: "Se sim, qual?", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+
+        { name: "dt_sent_to_lacen", label: "Data do envio da amostra ao LACEN", kind: "date", schema: optionalTextSchema, defaultValue: "" },
+        { name: "adequate_sample", label: "Acondicionamento da amostra adequada", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
     ]
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. MEDIDAS DE CONTROLE
-// -----------------------------------------------------------------------------
-const controlMeasuresSection = {
-    id: "control_measures",
-    title: "Medidas de Controle",
-    description: "Ações de bloqueio vacinal realizadas.",
-    columns: 3,
-    fields: [
-        {
-            name: "vaccine_blockade_performed",
-            label: "Realizou Bloqueio Vacinal",
-            kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
-            options: [
-                { label: "1 - Sim", value: "1" },
-                { label: "2 - Não", value: "2" },
-                { label: "3 - Não, todos vacinados", value: "3" },
-                { label: "4 - Não, sem história de contato", value: "4" },
-                { label: "9 - Ignorado", value: "9" },
-            ]
-        },
-        { name: "vaccinated_under_5", label: "Vacinados: Menor de 5 anos", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "vaccinated_5_to_14", label: "Vacinados: De 5 a 14 anos", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "vaccinated_15_to_39", label: "Vacinados: De 15 a 39 anos", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        {
-            name: "time_interval",
-            label: "Especifique Intervalo de Tempo",
-            kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
-            options: [
-                { label: "1 - Em até 72 horas", value: "1" },
-                { label: "2 - Após 72 horas", value: "2" },
-                { label: "9 - Ignorado", value: "9" },
-            ]
-        },
-    ]
-} satisfies NotificationSectionDefinition;
-
-// -----------------------------------------------------------------------------
-// 8. CONCLUSÃO
+// 7. CONCLUSÃO
 // -----------------------------------------------------------------------------
 const conclusionSection = {
     id: "conclusion",
     title: "Conclusão",
-    description: "Classificação final e evolução do caso.",
+    description: "Classificação final e encerramento do caso.",
     columns: 3,
     fields: [
         {
@@ -433,14 +366,13 @@ const conclusionSection = {
             schema: optionalTextSchema,
             defaultValue: "",
             options: [
-                { label: "1 - Sarampo", value: "1" },
-                { label: "2 - Rubéola", value: "2" },
-                { label: "3 - Descartado", value: "3" },
+                { label: "1 - Confirmado", value: "1" },
+                { label: "2 - Descartado", value: "2" },
             ]
         },
         {
             name: "confirmation_criterion",
-            label: "Critério de Confirmação ou Descarte",
+            label: "Critério de Confirmação/Descarte",
             kind: "select",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -448,56 +380,32 @@ const conclusionSection = {
                 { label: "1 - Laboratorial", value: "1" },
                 { label: "2 - Clínico-epidemiológico", value: "2" },
                 { label: "3 - Clínico", value: "3" },
-                { label: "4 - Data da Última Dose da Vacina", value: "4" },
             ]
         },
         {
-            name: "discarded_classification",
-            label: "Classificação final do caso descartado",
-            kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
-            options: [
-                { label: "1 - Dengue", value: "1" },
-                { label: "2 - Escarlatina", value: "2" },
-                { label: "3 - Exantema Súbito (Herpes Vírus Tipo 6)", value: "3" },
-                { label: "4 - Eritema Infeccioso (Parvovírus B19)", value: "4" },
-                { label: "5 - Enterovirose", value: "5" },
-                { label: "6 - Evento Temporal Relacionado à Vacina", value: "6" },
-                { label: "7 - IgM associado temporalmente à vacina", value: "7" },
-                { label: "8 - Sem soroconversão dos anticorpos IgG", value: "8" },
-                { label: "9 - Ignorado", value: "9" },
-            ]
-        },
-
-        // Local Provável da Fonte de Infecção
-        {
-            name: "autochthonous",
-            label: "O caso é autóctone do município de residência?",
+            name: "isolated_case",
+            label: "Diarréia por rotavírus: Caso isolado",
             kind: "select",
             schema: optionalTextSchema,
             defaultValue: "",
-            options: [
-                { label: "1 - Sim", value: "1" },
-                { label: "2 - Não", value: "2" },
-                { label: "3 - Indeterminado", value: "3" },
-            ]
+            options: yesNoOptions,
         },
-        { name: "infection_state", label: "UF (Fonte)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "infection_country", label: "País (Fonte)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "infection_city", label: "Município (Fonte)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "infection_district", label: "Distrito (Fonte)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "infection_neighborhood", label: "Bairro (Fonte)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-
+        {
+            name: "outbreak_location",
+            label: "Se surto sim, local",
+            kind: "text",
+            schema: optionalTextSchema,
+            defaultValue: "",
+        },
         {
             name: "case_evolution",
-            label: "Evolução do Caso",
+            label: "Evolução",
             kind: "select",
             schema: optionalTextSchema,
             defaultValue: "9",
             options: [
                 { label: "1 - Cura", value: "1" },
-                { label: "2 - Óbito por doenças exantemáticas", value: "2" },
+                { label: "2 - Óbito por Rotavírus", value: "2" },
                 { label: "3 - Óbito por outras causas", value: "3" },
                 { label: "9 - Ignorado", value: "9" },
             ]
@@ -508,22 +416,20 @@ const conclusionSection = {
     ]
 } satisfies NotificationSectionDefinition;
 
-
 const sections = [
     generalSection,
     patientSection,
     residenceSection,
-    complementarySection,
-    attendanceSection,
+    clinicalSection,
+    vaccinationSection,
     laboratorySection,
-    controlMeasuresSection,
     conclusionSection,
 ] as const satisfies readonly NotificationSectionDefinition[];
 
-export const exanthematousDiseasesNotificationDefinition = defineNotificationType({
-    id: 16,
-    slug: "exanthematous_diseases",
-    label: "Doenças Exantemáticas (Sarampo/Rubéola)",
-    description: `Ficha de investigação para Doenças Exantemáticas Febris (Sarampo/Rubéola). Todo paciente com febre, exantema maculopapular e tosse/coriza/conjuntivite (caso suspeito de sarampo) ou linfoadenopatia (caso suspeito de rubéola).`,
+export const rotavirusNotificationDefinition = defineNotificationType({
+    id: 17,
+    slug: "rotavirus",
+    label: "Rotavírus",
+    description: `Ficha de investigação para Rotavírus. Definição de caso suspeito: Criança menor de cinco anos, com diagnóstico de Doença Diarreica Aguda, que tenha recebido soro de reidratação por via endovenosa, independente do estado vacinal.`,
     sections,
 });
