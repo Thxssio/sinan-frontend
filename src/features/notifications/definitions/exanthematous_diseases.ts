@@ -6,128 +6,47 @@ import {
     raceColorOptions,
     sexOptions,
     yesNoUnknownOptions,
+    yesNoOptions,
+    timeUnitOptions,
+    resultOptions,
     type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared";
 
 const optionalTextSchema = z.string().optional();
 
-const yesNoIgnoredOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-    { label: "9 - Ignorado", value: "9" },
-];
-
-const yesNoOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-];
-
-const timeUnitOptions = [
-    { label: "1 - Hora", value: "1" },
-    { label: "2 - Dia", value: "2" },
-    { label: "3 - Mês", value: "3" },
-    { label: "4 - Ano", value: "4" },
-];
-
 // -----------------------------------------------------------------------------
-// 1. DADOS GERAIS
-// -----------------------------------------------------------------------------
-const generalSection = {
-    id: "general",
-    title: "Dados Gerais",
-    description: "Informações básicas da notificação e unidade de saúde.",
-    columns: 3,
-    fields: [
-        {
-            name: "tp_notification",
-            label: "Tipo de Notificação",
-            kind: "select",
-            schema: z.string(),
-            defaultValue: "2",
-            options: [{ label: "2 - Individual", value: "2" }],
-        },
-        {
-            name: "disease",
-            label: "Agravo/doença",
-            kind: "select",
-            schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "",
-            options: [
-                { label: "1 - SARAMPO", value: "1" },
-                { label: "2 - RUBÉOLA", value: "2" },
-            ],
-        },
-        {
-            name: "cid10",
-            label: "Código (CID10)",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "B09",
-        },
-        {
-            name: "dt_notification",
-            label: "Data da Notificação",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "uf_notification",
-            label: "UF",
-            kind: "text",
-            schema: z.string().min(2, "UF obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "city_notification",
-            label: "Município de Notificação",
-            kind: "text",
-            schema: z.string().min(1, "Município obrigatório"),
-            defaultValue: "",
-        },
-        {
-            name: "health_unit_name",
-            label: "Unidade de Saúde (ou outra fonte notificadora)",
-            kind: "text",
-            schema: z.string().min(1, "Unidade obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "dt_first_symptoms",
-            label: "Data dos Primeiros Sintomas",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-    ],
-} satisfies NotificationSectionDefinition;
-
-// -----------------------------------------------------------------------------
-// 2. DADOS DO PACIENTE (NOTIFICAÇÃO INDIVIDUAL)
+// 1. DADOS DO PACIENTE
 // -----------------------------------------------------------------------------
 const patientSection = {
     id: "patient",
-    title: "Notificação Individual",
-    description: "Identificação e dados sociodemográficos.",
+    title: "Dados do Paciente",
+    description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
     columns: 3,
     fields: [
         {
             name: "patient_name",
-            label: "Nome do Paciente",
+            label: "Nome",
             kind: "text",
             schema: z.string().min(3, "Nome obrigatório"),
             defaultValue: "",
         },
         {
+            name: "patient_cpf",
+            label: "CPF",
+            kind: "text",
+            schema: z.string().min(11, "CPF obrigatório"),
+            defaultValue: "",
+        },
+        {
             name: "patient_birth_date",
-            label: "Data de Nascimento",
+            label: "Data de nascimento",
             kind: "date",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Data de nascimento obrigatória"),
             defaultValue: "",
         },
         {
             name: "patient_age_unit",
-            label: "(ou) Idade (Unidade)",
+            label: "Idade (Unidade)",
             kind: "select",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -135,7 +54,7 @@ const patientSection = {
         },
         {
             name: "patient_age_value",
-            label: "(ou) Idade (Valor)",
+            label: "Idade (Valor)",
             kind: "text",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -146,11 +65,7 @@ const patientSection = {
             kind: "select",
             schema: z.string().min(1, "Sexo obrigatório"),
             defaultValue: "",
-            options: [
-                { label: "M - Masculino", value: "M" },
-                { label: "F - Feminino", value: "F" },
-                { label: "I - Ignorado", value: "I" },
-            ],
+            options: sexOptions,
         },
         {
             name: "pregnant",
@@ -172,42 +87,23 @@ const patientSection = {
             name: "race_color",
             label: "Raça/Cor",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
-            options: [
-                { label: "1 - Branca", value: "1" },
-                { label: "2 - Preta", value: "2" },
-                { label: "3 - Amarela", value: "3" },
-                { label: "4 - Parda", value: "4" },
-                { label: "5 - Indígena", value: "5" },
-                { label: "9 - Ignorado", value: "9" },
-            ],
+            schema: z.string().min(1, "Raça/Cor obrigatória"),
+            defaultValue: "",
+            options: raceColorOptions,
         },
         {
             name: "education_level",
             label: "Escolaridade",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
-            options: [
-                { label: "0 - Analfabeto", value: "0" },
-                { label: "1 - 1ª a 4ª série incompleta do EF", value: "1" },
-                { label: "2 - 4ª série completa do EF", value: "2" },
-                { label: "3 - 5ª à 8ª série incompleta do EF", value: "3" },
-                { label: "4 - Ensino fundamental completo", value: "4" },
-                { label: "5 - Ensino médio incompleto", value: "5" },
-                { label: "6 - Ensino médio completo", value: "6" },
-                { label: "7 - Educação superior incompleta", value: "7" },
-                { label: "8 - Educação superior completa", value: "8" },
-                { label: "9 - Ignorado", value: "9" },
-                { label: "10 - Não se aplica", value: "10" },
-            ],
+            schema: z.string().min(1, "Escolaridade obrigatória"),
+            defaultValue: "",
+            options: educationLevelOptions,
         },
         {
             name: "sus_card_number",
-            label: "Número do Cartão SUS",
+            label: "Cartão SUS",
             kind: "text",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Cartão SUS obrigatório"),
             defaultValue: "",
         },
         {
@@ -221,7 +117,7 @@ const patientSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 3. DADOS DE RESIDÊNCIA
+// 2. DADOS DE RESIDÊNCIA
 // -----------------------------------------------------------------------------
 const residenceSection = {
     id: "residence",
@@ -259,7 +155,7 @@ const residenceSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 4. DADOS COMPLEMENTARES DO CASO
+// 3. DADOS COMPLEMENTARES DO CASO
 // -----------------------------------------------------------------------------
 const complementarySection = {
     id: "complementary",
@@ -269,7 +165,7 @@ const complementarySection = {
     fields: [
         { name: "dt_investigation", label: "Data da Investigação", kind: "date", schema: optionalTextSchema, defaultValue: "" },
         { name: "occupation", label: "Ocupação", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "took_vaccine", label: "Tomou Vacina Contra Sarampo e Rubéola (dupla ou triviral)", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "took_vaccine", label: "Tomou Vacina Contra Sarampo e Rubéola (dupla ou triviral)", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "dt_last_dose", label: "Data da Última Dose", kind: "date", schema: optionalTextSchema, defaultValue: "" },
         {
             name: "contact_suspected_case",
@@ -295,17 +191,17 @@ const complementarySection = {
         { name: "dt_fever_start", label: "Data do Início da Febre", kind: "date", schema: optionalTextSchema, defaultValue: "" },
 
         // Outros Sinais e Sintomas
-        { name: "symptom_cough", label: "Tosse", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_arthralgia", label: "Artralgia/Artrite", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_coryza", label: "Coriza", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_ganglia", label: "Presença de Gânglios Retroauriculares/Occiptais", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_conjunctivitis", label: "Conjuntivite", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
-        { name: "symptom_retro_ocular_pain", label: "Dor Retro-Ocular", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "symptom_cough", label: "Tosse", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symptom_arthralgia", label: "Artralgia/Artrite", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symptom_coryza", label: "Coriza", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symptom_ganglia", label: "Presença de Gânglios Retroauriculares/Occiptais", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symptom_conjunctivitis", label: "Conjuntivite", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symptom_retro_ocular_pain", label: "Dor Retro-Ocular", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
     ],
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 5. ATENDIMENTO
+// 4. ATENDIMENTO
 // -----------------------------------------------------------------------------
 const attendanceSection = {
     id: "attendance",
@@ -313,24 +209,17 @@ const attendanceSection = {
     description: "Informações sobre hospitalização do paciente.",
     columns: 3,
     fields: [
-        { name: "hospitalization_occurred", label: "Ocorreu Hospitalização", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "hospitalization_occurred", label: "Ocorreu Hospitalização", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "dt_hospitalization", label: "Data da Internação", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-        { name: "hospital_state", label: "UF", kind: "text", schema: optionalTextSchema, defaultValue: "" },
+        { name: "hospital_state", label: "UF do Hospital", kind: "text", schema: optionalTextSchema, defaultValue: "" },
         { name: "hospital_city", label: "Município do Hospital", kind: "text", schema: optionalTextSchema, defaultValue: "" },
         { name: "hospital_name", label: "Nome do Hospital", kind: "text", schema: optionalTextSchema, defaultValue: "" },
     ]
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 6. DADOS DO LABORATÓRIO
+// 5. DADOS DO LABORATÓRIO
 // -----------------------------------------------------------------------------
-const resultOptions = [
-    { label: "1 - Reagente", value: "1" },
-    { label: "2 - Não Reagente", value: "2" },
-    { label: "3 - Inconclusivo", value: "3" },
-    { label: "4 - Não Realizado", value: "4" },
-];
-
 const laboratorySection = {
     id: "laboratory",
     title: "Dados do Laboratório",
@@ -377,7 +266,7 @@ const laboratorySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. MEDIDAS DE CONTROLE
+// 6. MEDIDAS DE CONTROLE
 // -----------------------------------------------------------------------------
 const controlMeasuresSection = {
     id: "control_measures",
@@ -418,7 +307,7 @@ const controlMeasuresSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 8. CONCLUSÃO
+// 7. CONCLUSÃO
 // -----------------------------------------------------------------------------
 const conclusionSection = {
     id: "conclusion",
@@ -504,13 +393,11 @@ const conclusionSection = {
         },
         { name: "dt_death", label: "Data do Óbito", kind: "date", schema: optionalTextSchema, defaultValue: "" },
         { name: "dt_closing", label: "Data do Encerramento", kind: "date", schema: optionalTextSchema, defaultValue: "" },
-        { name: "additional_observations", label: "Informações complementares e observações", kind: "text", schema: optionalTextSchema, defaultValue: "" },
     ]
 } satisfies NotificationSectionDefinition;
 
 
 const sections = [
-    generalSection,
     patientSection,
     residenceSection,
     complementarySection,

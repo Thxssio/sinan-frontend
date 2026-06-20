@@ -173,6 +173,11 @@ export const yesNoUnknownOptions = [
   { label: "Ignorado", value: "unknown" },
 ] satisfies NotificationFieldOption[]
 
+export const yesNoOptions = [
+  { label: "Sim", value: "yes" },
+  { label: "Não", value: "no" },
+] satisfies NotificationFieldOption[];
+
 export const sexOptions = [
   { label: "Feminino", value: "female" },
   { label: "Masculino", value: "male" },
@@ -265,3 +270,43 @@ export const animalConditionOptions = [
 ]
 
 ///
+
+export const timeUnitOptions = [
+  { label: "Hora", value: "hour" },
+  { label: "Dia", value: "day" },
+  { label: "Mês", value: "month" },
+  { label: "Ano", value: "year" },
+] satisfies NotificationFieldOption[];
+
+export const labResultOptions = [
+  { value: "1", label: "Positivo/reagente" },
+  { value: "2", label: "Negativo/não reagente" },
+  { value: "3", label: "Inconclusivo" },
+  { value: "4", label: "Não realizado" },
+  { value: "5", label: "Indeterminado" },
+  { value: "6", label: "Detectável" },
+  { value: "7", label: "Indetectável" },
+  { value: "9", label: "Ignorado" },
+] satisfies NotificationFieldOption[];
+
+export const resultOptions = [
+  { label: "Reagente", value: "reactive" },
+  { label: "Não Reagente", value: "non_reactive" },
+  { label: "Inconclusivo", value: "inconclusive" },
+  { label: "Não Realizado", value: "not_performed" },
+] satisfies NotificationFieldOption[];
+
+export const smokingHabitOptions = [
+  { label: "Sim", value: "1" },
+  { label: "Não", value: "2" },
+  { label: "Ex-fumante", value: "3" },
+  { label: "Ignorado", value: "unknown" },
+] satisfies NotificationFieldOption[];
+
+export const examResultOptions = [
+  { label: "1 - Positivo", value: "1" },
+  { label: "2 - Negativo", value: "2" },
+  { label: "3 - Inconclusivo", value: "3" },
+  { label: "4 - Não realizado", value: "4" },
+  { label: "9 - Ignorado", value: "9" },
+] satisfies NotificationFieldOption[];

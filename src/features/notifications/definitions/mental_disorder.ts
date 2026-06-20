@@ -5,135 +5,48 @@ import {
     educationLevelOptions,
     raceColorOptions,
     sexOptions,
+    timeUnitOptions,
+    smokingHabitOptions,
+    yesNoOptions,
     yesNoUnknownOptions,
     type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared";
 
 const optionalTextSchema = z.string().optional();
 
-const yesNoIgnoredOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-    { label: "9 - Ignorado", value: "9" },
-];
-
-const yesNoOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-];
-
-const timeUnitOptions = [
-    { label: "1 - Hora", value: "1" },
-    { label: "2 - Dia", value: "2" },
-    { label: "3 - Mês", value: "3" },
-    { label: "4 - Ano", value: "4" },
-];
-
-const smokingHabitOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-    { label: "3 - Ex-fumante", value: "3" },
-    { label: "9 - Ignorado", value: "9" },
-];
-
 // -----------------------------------------------------------------------------
-// 1. DADOS GERAIS
-// -----------------------------------------------------------------------------
-const generalSection = {
-    id: "general",
-    title: "Dados Gerais",
-    description: "Informações básicas da notificação e unidade de saúde.",
-    columns: 3,
-    fields: [
-        {
-            name: "tp_notification",
-            label: "Tipo de Notificação",
-            kind: "select",
-            schema: z.string(),
-            defaultValue: "2",
-            options: [{ label: "2 - Individual", value: "2" }],
-        },
-        {
-            name: "disease",
-            label: "Agravo/doença",
-            kind: "select",
-            schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "transtornos_mentais",
-            options: [
-                { label: "Transtornos Mentais Relacionados ao Trabalho", value: "transtornos_mentais" },
-            ],
-        },
-        {
-            name: "cid10",
-            label: "Código (CID10)",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "F99",
-        },
-        {
-            name: "dt_notification",
-            label: "Data da Notificação",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "uf_notification",
-            label: "UF",
-            kind: "text",
-            schema: z.string().min(2, "UF obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "city_notification",
-            label: "Município de Notificação",
-            kind: "text",
-            schema: z.string().min(1, "Município obrigatório"),
-            defaultValue: "",
-        },
-        {
-            name: "health_unit_name",
-            label: "Unidade de Saúde (ou outra fonte notificadora)",
-            kind: "text",
-            schema: z.string().min(1, "Unidade obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "dt_diagnosis",
-            label: "Data do Diagnóstico",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-    ],
-} satisfies NotificationSectionDefinition;
-
-// -----------------------------------------------------------------------------
-// 2. DADOS DO PACIENTE
+// 1. DADOS DO PACIENTE
 // -----------------------------------------------------------------------------
 const patientSection = {
     id: "patient",
     title: "Dados do Paciente",
-    description: "Identificação e dados sociodemográficos da Notificação Individual.",
+    description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
     columns: 3,
     fields: [
         {
             name: "patient_name",
-            label: "Nome do Paciente",
+            label: "Nome",
             kind: "text",
             schema: z.string().min(3, "Nome obrigatório"),
             defaultValue: "",
         },
         {
+            name: "patient_cpf",
+            label: "CPF",
+            kind: "text",
+            schema: z.string().min(11, "CPF obrigatório"),
+            defaultValue: "",
+        },
+        {
             name: "patient_birth_date",
-            label: "Data de Nascimento",
+            label: "Data de nascimento",
             kind: "date",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Data de nascimento obrigatória"),
             defaultValue: "",
         },
         {
             name: "patient_age_unit",
-            label: "(ou) Idade (Unidade)",
+            label: "Idade (Unidade)",
             kind: "select",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -141,7 +54,7 @@ const patientSection = {
         },
         {
             name: "patient_age_value",
-            label: "(ou) Idade (Valor)",
+            label: "Idade (Valor)",
             kind: "text",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -174,26 +87,26 @@ const patientSection = {
             name: "race_color",
             label: "Raça/Cor",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
+            schema: z.string().min(1, "Raça/Cor obrigatória"),
+            defaultValue: "unknown",
             options: raceColorOptions,
         },
         {
             name: "education_level",
             label: "Escolaridade",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
+            schema: z.string().min(1, "Escolaridade obrigatória"),
+            defaultValue: "unknown",
             options: [
                 ...educationLevelOptions,
-                { label: "10 - Não se aplica", value: "10" }
+                { label: "Não se aplica", value: "not_applicable" }
             ],
         },
         {
             name: "sus_card_number",
-            label: "Número do Cartão SUS",
+            label: "Cartão SUS",
             kind: "text",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Cartão SUS obrigatório"),
             defaultValue: "",
         },
         {
@@ -207,7 +120,7 @@ const patientSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 3. DADOS DE RESIDÊNCIA
+// 2. DADOS DE RESIDÊNCIA
 // -----------------------------------------------------------------------------
 const residenceSection = {
     id: "residence",
@@ -245,7 +158,7 @@ const residenceSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 4. DADOS COMPLEMENTARES DO CASO
+// 3. DADOS COMPLEMENTARES DO CASO
 // -----------------------------------------------------------------------------
 const complementarySection = {
     id: "complementary",
@@ -295,7 +208,7 @@ const complementarySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 5. DADOS DA EMPRESA CONTRATANTE
+// 4. DADOS DA EMPRESA CONTRATANTE
 // -----------------------------------------------------------------------------
 const companySection = {
     id: "company",
@@ -331,7 +244,7 @@ const companySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 6. ANTECEDENTES EPIDEMIOLÓGICOS E HÁBITOS
+// 5. ANTECEDENTES EPIDEMIOLÓGICOS E HÁBITOS
 // -----------------------------------------------------------------------------
 const epidemiologicalBackgroundSection = {
     id: "epidemiological_background",
@@ -361,7 +274,7 @@ const epidemiologicalBackgroundSection = {
         { name: "specific_diagnosis_cid10", label: "CID 10 Específico", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
         // Hábitos
-        { name: "smoking_habit", label: "Hábito de Fumar", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: smokingHabitOptions },
+        { name: "smoking_habit", label: "Hábito de Fumar", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: smokingHabitOptions },
         { name: "tobacco_exposure_unit", label: "Tempo de Exposição ao tabaco (Unidade)", kind: "select", schema: optionalTextSchema, defaultValue: "", options: timeUnitOptions },
         { name: "tobacco_exposure_value", label: "Tempo de Exposição ao tabaco (Valor)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
@@ -373,7 +286,7 @@ const epidemiologicalBackgroundSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. CONDUTA E EVOLUÇÃO
+// 6. CONDUTA E EVOLUÇÃO
 // -----------------------------------------------------------------------------
 const conductAndEvolutionSection = {
     id: "conduct_and_evolution",
@@ -391,10 +304,10 @@ const conductAndEvolutionSection = {
         { name: "conduct_others", label: "Conduta: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
 
         // Investigação Adicional
-        { name: "other_workers_same_disease", label: "Há ou houve outros trabalhadores com a mesma doença no local de trabalho?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "other_workers_same_disease", label: "Há ou houve outros trabalhadores com a mesma doença no local de trabalho?", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
 
         // Encaminhamento
-        { name: "referred_to_caps", label: "O paciente foi encaminhado a um Centro de Atenção Psicossocial (CAPS) no SUS ou outro serviço especializado?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "referred_to_caps", label: "O paciente foi encaminhado a um Centro de Atenção Psicossocial (CAPS) no SUS ou outro serviço especializado?", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
 
         // Evolução do Caso
         {
@@ -439,20 +352,10 @@ const conductAndEvolutionSection = {
                 { label: "9 - Ignorado", value: "9" },
             ],
         },
-
-        // Informações Complementares
-        {
-            name: "additional_observations",
-            label: "Informações complementares e observações",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "",
-        },
     ],
 } satisfies NotificationSectionDefinition;
 
 const sections = [
-    generalSection,
     patientSection,
     residenceSection,
     complementarySection,

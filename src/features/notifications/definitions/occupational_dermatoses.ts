@@ -5,128 +5,55 @@ import {
     educationLevelOptions,
     raceColorOptions,
     sexOptions,
+    timeUnitOptions,
+    yesNoOptions,
     yesNoUnknownOptions,
     type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared";
 
 const optionalTextSchema = z.string().optional();
 
-const yesNoOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-];
-
-const yesNoIgnoredOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-    { label: "9 - Ignorado", value: "9" },
-];
-
-const timeUnitOptions = [
-    { label: "1 - Hora", value: "1" },
-    { label: "2 - Dia", value: "2" },
-    { label: "3 - Mês", value: "3" },
-    { label: "4 - Ano", value: "4" },
-];
-
 // -----------------------------------------------------------------------------
-// 1. DADOS GERAIS (Campos 1 a 7)
-// -----------------------------------------------------------------------------
-const generalSection = {
-    id: "general",
-    title: "Dados Gerais",
-    description: "Informações básicas da notificação e unidade de saúde.",
-    columns: 3,
-    fields: [
-        {
-            name: "tp_notification",
-            label: "Tipo de Notificação",
-            kind: "select",
-            schema: z.string(),
-            defaultValue: "2",
-            options: [{ label: "2 - Individual", value: "2" }],
-        },
-        {
-            name: "disease",
-            label: "Agravo/doença",
-            kind: "select",
-            schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "dermatose_ocupacional",
-            options: [
-                { label: "Dermatoses Ocupacionais", value: "dermatose_ocupacional" },
-            ],
-        },
-        {
-            name: "cid10",
-            label: "Código (CID10)",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "L98.9",
-        },
-        {
-            name: "dt_notification",
-            label: "Data da Notificação",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "uf_notification",
-            label: "UF de Notificação",
-            kind: "text",
-            schema: z.string().min(2, "UF obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "city_notification",
-            label: "Município de Notificação",
-            kind: "text",
-            schema: z.string().min(1, "Município obrigatório"),
-            defaultValue: "",
-        },
-        {
-            name: "health_unit_name",
-            label: "Unidade de Saúde (ou outra fonte notificadora)",
-            kind: "text",
-            schema: z.string().min(1, "Unidade obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "dt_diagnosis",
-            label: "Data do Diagnóstico",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-    ],
-} satisfies NotificationSectionDefinition;
-
-// -----------------------------------------------------------------------------
-// 2. DADOS DO PACIENTE (Campos 8 a 16)
+// 1. DADOS DO PACIENTE
 // -----------------------------------------------------------------------------
 const patientSection = {
     id: "patient",
     title: "Dados do Paciente",
-    description: "Identificação e dados sociodemográficos da Notificação Individual.",
+    description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
     columns: 3,
     fields: [
         {
             name: "patient_name",
-            label: "Nome do Paciente",
+            label: "Nome",
             kind: "text",
             schema: z.string().min(3, "Nome obrigatório"),
             defaultValue: "",
         },
         {
-            name: "patient_birth_date",
-            label: "Data de Nascimento",
-            kind: "date",
-            schema: optionalTextSchema,
+            name: "patient_cpf",
+            label: "CPF",
+            kind: "text",
+            schema: z.string().min(11, "CPF obrigatório"),
             defaultValue: "",
         },
         {
-            name: "patient_age",
-            label: "Idade",
+            name: "patient_birth_date",
+            label: "Data de nascimento",
+            kind: "date",
+            schema: z.string().min(1, "Data de nascimento obrigatória"),
+            defaultValue: "",
+        },
+        {
+            name: "patient_age_unit",
+            label: "Idade (Unidade)",
+            kind: "select",
+            schema: optionalTextSchema,
+            defaultValue: "",
+            options: timeUnitOptions,
+        },
+        {
+            name: "patient_age_value",
+            label: "Idade (Valor)",
             kind: "text",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -159,26 +86,26 @@ const patientSection = {
             name: "race_color",
             label: "Raça/Cor",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
+            schema: z.string().min(1, "Raça/Cor obrigatória"),
+            defaultValue: "unknown",
             options: raceColorOptions,
         },
         {
             name: "education_level",
             label: "Escolaridade",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
+            schema: z.string().min(1, "Escolaridade obrigatória"),
+            defaultValue: "unknown",
             options: [
                 ...educationLevelOptions,
-                { label: "10 - Não se aplica", value: "10" }
+                { label: "Não se aplica", value: "not_applicable" }
             ],
         },
         {
             name: "sus_card_number",
-            label: "Número do Cartão SUS",
+            label: "Cartão SUS",
             kind: "text",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Cartão SUS obrigatório"),
             defaultValue: "",
         },
         {
@@ -192,7 +119,7 @@ const patientSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 3. DADOS DE RESIDÊNCIA (Campos 17 a 30)
+// 2. DADOS DE RESIDÊNCIA
 // -----------------------------------------------------------------------------
 const residenceSection = {
     id: "residence",
@@ -230,7 +157,7 @@ const residenceSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 4. DADOS COMPLEMENTARES DO CASO (Campos 31 a 33)
+// 3. DADOS COMPLEMENTARES DO CASO
 // -----------------------------------------------------------------------------
 const complementarySection = {
     id: "complementary",
@@ -280,7 +207,7 @@ const complementarySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 5. DADOS DA EMPRESA CONTRATANTE (Campos 34 a 45)
+// 4. DADOS DA EMPRESA CONTRATANTE
 // -----------------------------------------------------------------------------
 const companySection = {
     id: "company",
@@ -316,7 +243,7 @@ const companySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 6. AGRAVOS E EXPOSIÇÃO (Campos 46 a 48)
+// 5. AGRAVOS E EXPOSIÇÃO
 // -----------------------------------------------------------------------------
 const exposureSection = {
     id: "exposure",
@@ -325,12 +252,12 @@ const exposureSection = {
     columns: 3,
     fields: [
         // Agravos Associados
-        { name: "aggravation_hypertension", label: "Hipertensão Arterial", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "aggravation_diabetes", label: "Diabetes Mellitus", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "aggravation_leprosy", label: "Hanseníase", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "aggravation_mental_disorder", label: "Transtorno Mental", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "aggravation_tuberculosis", label: "Tuberculose", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "aggravation_asthma", label: "Asma", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "aggravation_hypertension", label: "Hipertensão Arterial", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "aggravation_diabetes", label: "Diabetes Mellitus", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "aggravation_leprosy", label: "Hanseníase", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "aggravation_mental_disorder", label: "Transtorno Mental", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "aggravation_tuberculosis", label: "Tuberculose", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "aggravation_asthma", label: "Asma", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "aggravation_others", label: "Outras (Especificar)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
         // Tempo de Exposição e Tratamento
@@ -351,7 +278,7 @@ const exposureSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. DERMATOSES OCUPACIONAIS ESPECÍFICOS (Campos 49 a 57)
+// 6. DERMATOSES OCUPACIONAIS ESPECÍFICOS
 // -----------------------------------------------------------------------------
 const dermatosisSection = {
     id: "dermatosis",
@@ -401,10 +328,10 @@ const dermatosisSection = {
                 { label: "99 - Ignorado", value: "99" },
             ],
         },
-        { name: "patch_test_positive", label: "Teste epicutâneo positivo", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "patch_test_positive", label: "Teste epicutâneo positivo", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "specific_diagnosis", label: "Diagnóstico Específico", kind: "text", schema: optionalTextSchema, defaultValue: "" },
         { name: "specific_diagnosis_cid10", label: "CID 10 (Específico)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
-        { name: "work_leave", label: "Houve afastamento do trabalho para tratamento?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "work_leave", label: "Houve afastamento do trabalho para tratamento?", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "leave_time_unit", label: "Tempo de Afastamento (Unidade)", kind: "select", schema: optionalTextSchema, defaultValue: "", options: timeUnitOptions },
         { name: "leave_time_value", label: "Tempo de Afastamento (Valor)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
         {
@@ -419,7 +346,7 @@ const dermatosisSection = {
                 { label: "9 - Ignorado", value: "9" },
             ],
         },
-        { name: "other_workers_affected", label: "Há ou Houve Outros Trabalhadores com a mesma Doença no Local?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "other_workers_affected", label: "Há ou Houve Outros Trabalhadores com a mesma Doença no Local?", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
 
         // Conduta Geral
         { name: "conduct_remove_agent", label: "Afastamento do agente do risco com mudança de função/posto", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
@@ -433,7 +360,7 @@ const dermatosisSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 8. CONCLUSÃO (Campos 58 a 60)
+// 7. CONCLUSÃO
 // -----------------------------------------------------------------------------
 const conclusionSection = {
     id: "conclusion",
@@ -479,18 +406,10 @@ const conclusionSection = {
                 { label: "9 - Ignorado", value: "9" },
             ],
         },
-        {
-            name: "additional_observations",
-            label: "Informações complementares e observações",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "",
-        },
     ],
 } satisfies NotificationSectionDefinition;
 
 const sections = [
-    generalSection,
     patientSection,
     residenceSection,
     complementarySection,

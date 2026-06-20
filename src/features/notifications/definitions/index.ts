@@ -1,4 +1,5 @@
-import { aidsChildrenNotificationDefinition } from "@/features/notifications/definitions/aids"
+import { aidsChildrenNotificationDefinition } from "@/features/notifications/definitions/aids_under_13"
+import { aidsNotificationDefinition } from "@/features/notifications/definitions/aids"
 import { antiRabiesNotificationDefinition } from "@/features/notifications/definitions/anti_rabies"
 import { botulismNotificationDefinition } from "@/features/notifications/definitions/botulism"
 import { choleraNotificationDefinition } from "@/features/notifications/definitions/cholera"
@@ -19,6 +20,7 @@ import { exanthematousDiseasesNotificationDefinition } from "@/features/notifica
 import { rotavirusNotificationDefinition } from "@/features/notifications/definitions/rotavirus"
 export {
   aidsChildrenNotificationDefinition,
+  aidsNotificationDefinition,
   antiRabiesNotificationDefinition,
   botulismNotificationDefinition,
   chikungunyaFeverNotificationDefinition,
@@ -42,6 +44,7 @@ export * from "@/features/notifications/definitions/shared"
 
 export const notificationTypeDefinitionList = [
   aidsChildrenNotificationDefinition,
+  aidsNotificationDefinition,
   venomousAnimalNotificationDefinition,
   botulismNotificationDefinition,
   epizootyNotificationDefinition,
@@ -63,7 +66,8 @@ export const notificationTypeDefinitionList = [
 ] as const
 
 export const notificationTypeDefinitions = {
-  aids: aidsChildrenNotificationDefinition,
+  aids_under_13: aidsChildrenNotificationDefinition,
+  aids: aidsNotificationDefinition,
   venomous_animal: venomousAnimalNotificationDefinition,
   botulism: botulismNotificationDefinition,
   epizooty: epizootyNotificationDefinition,

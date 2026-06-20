@@ -5,128 +5,51 @@ import {
     educationLevelOptions,
     raceColorOptions,
     sexOptions,
+    timeUnitOptions,
     yesNoUnknownOptions,
     type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared";
 
 const optionalTextSchema = z.string().optional();
 
-const yesNoIgnoredOptions = [
-    { label: "1 - Sim", value: "1" },
-    { label: "2 - Não", value: "2" },
-    { label: "9 - Ignorado", value: "9" },
-];
-
 const yesNoOptions = [
     { label: "1 - Sim", value: "1" },
     { label: "2 - Não", value: "2" },
 ];
 
-const timeUnitOptions = [
-    { label: "1 - Hora", value: "1" },
-    { label: "2 - Dia", value: "2" },
-    { label: "3 - Mês", value: "3" },
-    { label: "4 - Ano", value: "4" },
-];
-
 // -----------------------------------------------------------------------------
-// 1. DADOS GERAIS
-// -----------------------------------------------------------------------------
-const generalSection = {
-    id: "general",
-    title: "Dados Gerais",
-    description: "Informações básicas da notificação e unidade de saúde.",
-    columns: 3,
-    fields: [
-        {
-            name: "tp_notification",
-            label: "Tipo de Notificação",
-            kind: "select",
-            schema: z.string(),
-            defaultValue: "2",
-            options: [{ label: "2 - Individual", value: "2" }],
-        },
-        {
-            name: "disease",
-            label: "Agravo/doença",
-            kind: "select",
-            schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "pair",
-            options: [
-                { label: "PAIR", value: "pair" },
-            ],
-        },
-        {
-            name: "cid10",
-            label: "Código (CID10)",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "H83.3",
-        },
-        {
-            name: "dt_notification",
-            label: "Data da Notificação",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "uf_notification",
-            label: "UF",
-            kind: "text",
-            schema: z.string().min(2, "UF obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "city_notification",
-            label: "Município de Notificação",
-            kind: "text",
-            schema: z.string().min(1, "Município obrigatório"),
-            defaultValue: "",
-        },
-        {
-            name: "health_unit_name",
-            label: "Unidade de Saúde (ou outra fonte notificadora)",
-            kind: "text",
-            schema: z.string().min(1, "Unidade obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "dt_diagnosis",
-            label: "Data do Diagnóstico",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-    ],
-} satisfies NotificationSectionDefinition;
-
-// -----------------------------------------------------------------------------
-// 2. DADOS DO PACIENTE
+// 1. DADOS DO PACIENTE
 // -----------------------------------------------------------------------------
 const patientSection = {
     id: "patient",
     title: "Dados do Paciente",
-    description: "Identificação e dados sociodemográficos da Notificação Individual.",
+    description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
     columns: 3,
     fields: [
         {
             name: "patient_name",
-            label: "Nome do Paciente",
+            label: "Nome",
             kind: "text",
             schema: z.string().min(3, "Nome obrigatório"),
             defaultValue: "",
         },
         {
+            name: "patient_cpf",
+            label: "CPF",
+            kind: "text",
+            schema: z.string().min(11, "CPF obrigatório"),
+            defaultValue: "",
+        },
+        {
             name: "patient_birth_date",
-            label: "Data de Nascimento",
+            label: "Data de nascimento",
             kind: "date",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Data de nascimento obrigatória"),
             defaultValue: "",
         },
         {
             name: "patient_age_unit",
-            label: "(ou) Idade (Unidade)",
+            label: "Idade (Unidade)",
             kind: "select",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -134,7 +57,7 @@ const patientSection = {
         },
         {
             name: "patient_age_value",
-            label: "(ou) Idade (Valor)",
+            label: "Idade (Valor)",
             kind: "text",
             schema: optionalTextSchema,
             defaultValue: "",
@@ -157,7 +80,7 @@ const patientSection = {
                 { label: "1 - 1º Trimestre", value: "1" },
                 { label: "2 - 2º Trimestre", value: "2" },
                 { label: "3 - 3º Trimestre", value: "3" },
-                { label: "4 - Idade gestacional Ignorada", value: "4" },
+                { label: "4 - Idade gestacional ignorada", value: "4" },
                 { label: "5 - Não", value: "5" },
                 { label: "6 - Não se aplica", value: "6" },
                 { label: "9 - Ignorado", value: "9" },
@@ -167,26 +90,26 @@ const patientSection = {
             name: "race_color",
             label: "Raça/Cor",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
+            schema: z.string().min(1, "Raça/Cor obrigatória"),
+            defaultValue: "unknown",
             options: raceColorOptions,
         },
         {
             name: "education_level",
             label: "Escolaridade",
             kind: "select",
-            schema: optionalTextSchema,
-            defaultValue: "9",
+            schema: z.string().min(1, "Escolaridade obrigatória"),
+            defaultValue: "unknown",
             options: [
                 ...educationLevelOptions,
-                { label: "10 - Não se aplica", value: "10" }
+                { label: "Não se aplica", value: "not_applicable" }
             ],
         },
         {
             name: "sus_card_number",
-            label: "Número do Cartão SUS",
+            label: "Cartão SUS",
             kind: "text",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Cartão SUS obrigatório"),
             defaultValue: "",
         },
         {
@@ -200,7 +123,7 @@ const patientSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 3. DADOS DE RESIDÊNCIA
+// 2. DADOS DE RESIDÊNCIA
 // -----------------------------------------------------------------------------
 const residenceSection = {
     id: "residence",
@@ -238,7 +161,7 @@ const residenceSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 4. DADOS COMPLEMENTARES DO CASO
+// 3. DADOS COMPLEMENTARES DO CASO
 // -----------------------------------------------------------------------------
 const complementarySection = {
     id: "complementary",
@@ -288,7 +211,7 @@ const complementarySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 5. DADOS DA EMPRESA CONTRATANTE
+// 4. DADOS DA EMPRESA CONTRATANTE
 // -----------------------------------------------------------------------------
 const companySection = {
     id: "company",
@@ -324,7 +247,7 @@ const companySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 6. ANTECEDENTES EPIDEMIOLÓGICOS
+// 5. ANTECEDENTES EPIDEMIOLÓGICOS
 // -----------------------------------------------------------------------------
 const epidemiologicalBackgroundSection = {
     id: "epidemiological_background",
@@ -333,13 +256,13 @@ const epidemiologicalBackgroundSection = {
     columns: 3,
     fields: [
         // Agravos Associados
-        { name: "associated_hypertension", label: "Agravos Associados: Hipertensão Arterial", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "associated_diabetes", label: "Agravos Associados: Diabetes Mellitus", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "associated_leprosy", label: "Agravos Associados: Hanseníase", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "associated_mental_disorder", label: "Agravos Associados: Transtorno Mental", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "associated_tuberculosis", label: "Agravos Associados: Tuberculose", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "associated_asthma", label: "Agravos Associados: Asma", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "associated_others", label: "Agravos Associados: Outras", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "associated_hypertension", label: "Agravos Associados: Hipertensão Arterial", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "associated_diabetes", label: "Agravos Associados: Diabetes Mellitus", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "associated_leprosy", label: "Agravos Associados: Hanseníase", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "associated_mental_disorder", label: "Agravos Associados: Transtorno Mental", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "associated_tuberculosis", label: "Agravos Associados: Tuberculose", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "associated_asthma", label: "Agravos Associados: Asma", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "associated_others", label: "Agravos Associados: Outras", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "associated_others_specify", label: "Outras (Especifique)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
         // Tempo de Exposição
@@ -362,7 +285,7 @@ const epidemiologicalBackgroundSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. CONCLUSÃO / PAIR
+// 6. CONCLUSÃO / PAIR
 // -----------------------------------------------------------------------------
 const conclusionPairSection = {
     id: "conclusion_pair",
@@ -386,19 +309,19 @@ const conclusionPairSection = {
         },
 
         // Exposição Concomitante a Ruído e:
-        { name: "exp_toluene_solvent", label: "Exposição Concomitante a Ruído e: Solvente a Base de Tolueno", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_heavy_metals", label: "Exposição Concomitante a Ruído e: Metais Pesados", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_ototoxic_medications", label: "Exposição Concomitante a Ruído e: Medicamentos Ototóxicos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_toxic_gases", label: "Exposição Concomitante a Ruído e: Gases Tóxicos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "exp_other_concomitant", label: "Exposição Concomitante a Ruído e: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "exp_toluene_solvent", label: "Exposição Concomitante a Ruído e: Solvente a Base de Tolueno", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "exp_heavy_metals", label: "Exposição Concomitante a Ruído e: Metais Pesados", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "exp_ototoxic_medications", label: "Exposição Concomitante a Ruído e: Medicamentos Ototóxicos", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "exp_toxic_gases", label: "Exposição Concomitante a Ruído e: Gases Tóxicos", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "exp_other_concomitant", label: "Exposição Concomitante a Ruído e: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "exp_other_concomitant_specify", label: "Outros (Especifique)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
         // Sintomas
-        { name: "symp_tinnitus", label: "Sintomas: Zumbido", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_dizziness", label: "Sintomas: Tontura", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_speech_difficulty", label: "Sintomas: Dificuldade p/ compreensão da fala", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_headache", label: "Sintomas: Cefaléia", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
-        { name: "symp_other", label: "Sintomas: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
+        { name: "symp_tinnitus", label: "Sintomas: Zumbido", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symp_dizziness", label: "Sintomas: Tontura", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symp_speech_difficulty", label: "Sintomas: Dificuldade p/ compreensão da fala", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symp_headache", label: "Sintomas: Cefaléia", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
+        { name: "symp_other", label: "Sintomas: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "symp_other_specify", label: "Outro Sintoma (Especifique)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
         // Diagnóstico Específico
@@ -408,7 +331,7 @@ const conclusionPairSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 8. CONDUTA E EVOLUÇÃO
+// 7. CONDUTA E EVOLUÇÃO
 // -----------------------------------------------------------------------------
 const conductAndEvolutionSection = {
     id: "conduct_and_evolution",
@@ -417,7 +340,7 @@ const conductAndEvolutionSection = {
     columns: 3,
     fields: [
         // Afastamento e Resultados
-        { name: "work_absence", label: "Houve afastamento do trabalho para tratamento?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "work_absence", label: "Houve afastamento do trabalho para tratamento?", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
         { name: "absence_time_unit", label: "Tempo de Afastamento do Trabalho para Tratamento (Unidade)", kind: "select", schema: optionalTextSchema, defaultValue: "", options: timeUnitOptions },
         { name: "absence_time_value", label: "Tempo de Afastamento do Trabalho para Tratamento (Valor)", kind: "text", schema: optionalTextSchema, defaultValue: "" },
         {
@@ -434,7 +357,7 @@ const conductAndEvolutionSection = {
         },
 
         // Outros Trabalhadores
-        { name: "other_workers_same_disease", label: "Há ou Houve Outros Trabalhadores com a mesma Doença no Local de Trabalho?", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: yesNoIgnoredOptions },
+        { name: "other_workers_same_disease", label: "Há ou Houve Outros Trabalhadores com a mesma Doença no Local de Trabalho?", kind: "select", schema: optionalTextSchema, defaultValue: "unknown", options: yesNoUnknownOptions },
 
         // Conduta Geral
         { name: "conduct_risk_removal", label: "Conduta Geral: Afastamento do agente do risco com mudança de função e/ou posto de trabalho", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoOptions },
@@ -488,21 +411,11 @@ const conductAndEvolutionSection = {
                 { label: "9 - Ignorado", value: "9" },
             ],
         },
-
-        // Informações Complementares
-        {
-            name: "additional_observations",
-            label: "Informações complementares e observações",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "",
-        },
     ],
 } satisfies NotificationSectionDefinition;
 
 
 const sections = [
-    generalSection,
     patientSection,
     residenceSection,
     complementarySection,

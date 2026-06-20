@@ -33,98 +33,33 @@ const examResultOptions = [
 ];
 
 // -----------------------------------------------------------------------------
-// 1. DADOS GERAIS (Campos 1 a 7)
-// -----------------------------------------------------------------------------
-const generalSection = {
-    id: "general",
-    title: "Dados Gerais",
-    description: "Informações básicas da notificação e unidade de saúde.",
-    columns: 3,
-    fields: [
-        {
-            name: "tp_notification",
-            label: "Tipo de Notificação",
-            kind: "select",
-            schema: z.string(),
-            defaultValue: "2",
-            options: [{ label: "2 - Individual", value: "2" }],
-        },
-        {
-            name: "disease",
-            label: "Agravo/doença",
-            kind: "select",
-            schema: z.string().min(1, "Obrigatório"),
-            defaultValue: "acidente_material_biologico",
-            options: [
-                { label: "ACIDENTE DE TRABALHO COM EXPOSIÇÃO À MAT. BIOLÓGICO", value: "acidente_material_biologico" },
-            ],
-        },
-        {
-            name: "cid10",
-            label: "Código (CID10)",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "Z20.9",
-        },
-        {
-            name: "dt_notification",
-            label: "Data da Notificação",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "uf_notification",
-            label: "UF de Notificação",
-            kind: "text",
-            schema: z.string().min(2, "UF obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "city_notification",
-            label: "Município de Notificação",
-            kind: "text",
-            schema: z.string().min(1, "Município obrigatório"),
-            defaultValue: "",
-        },
-        {
-            name: "health_unit_name",
-            label: "Unidade de Saúde (ou outra fonte notificadora)",
-            kind: "text",
-            schema: z.string().min(1, "Unidade obrigatória"),
-            defaultValue: "",
-        },
-        {
-            name: "dt_accident",
-            label: "Data do Acidente",
-            kind: "date",
-            schema: z.string().min(1, "Data obrigatória"),
-            defaultValue: "",
-        },
-    ],
-} satisfies NotificationSectionDefinition;
-
-// -----------------------------------------------------------------------------
-// 2. DADOS DO PACIENTE (Campos 8 a 16)
+// 1. DADOS DO PACIENTE
 // -----------------------------------------------------------------------------
 const patientSection = {
     id: "patient",
     title: "Dados do Paciente",
-    description: "Identificação e dados sociodemográficos da Notificação Individual.",
+    description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
     columns: 3,
     fields: [
         {
             name: "patient_name",
-            label: "Nome do Paciente",
+            label: "Nome",
             kind: "text",
             schema: z.string().min(3, "Nome obrigatório"),
             defaultValue: "",
         },
         {
+            name: "patient_cpf",
+            label: "CPF",
+            kind: "text",
+            schema: z.string().min(11, "CPF obrigatório"),
+            defaultValue: "",
+        },
+        {
             name: "patient_birth_date",
-            label: "Data de Nascimento",
+            label: "Data de nascimento",
             kind: "date",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Data de nascimento obrigatória"),
             defaultValue: "",
         },
         {
@@ -170,7 +105,7 @@ const patientSection = {
             name: "race_color",
             label: "Raça/Cor",
             kind: "select",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Raça/Cor obrigatória"),
             defaultValue: "9",
             options: raceColorOptions,
         },
@@ -178,7 +113,7 @@ const patientSection = {
             name: "education_level",
             label: "Escolaridade",
             kind: "select",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Escolaridade obrigatória"),
             defaultValue: "9",
             options: [
                 ...educationLevelOptions,
@@ -187,9 +122,9 @@ const patientSection = {
         },
         {
             name: "sus_card_number",
-            label: "Número do Cartão SUS",
+            label: "Cartão SUS",
             kind: "text",
-            schema: optionalTextSchema,
+            schema: z.string().min(1, "Cartão SUS obrigatório"),
             defaultValue: "",
         },
         {
@@ -203,7 +138,7 @@ const patientSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 3. DADOS DE RESIDÊNCIA (Campos 17 a 30)
+// 2. DADOS DE RESIDÊNCIA
 // -----------------------------------------------------------------------------
 const residenceSection = {
     id: "residence",
@@ -241,7 +176,7 @@ const residenceSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 4. DADOS COMPLEMENTARES DO CASO (Campos 31 a 33)
+// 3. DADOS COMPLEMENTARES DO CASO
 // -----------------------------------------------------------------------------
 const complementarySection = {
     id: "complementary",
@@ -291,7 +226,7 @@ const complementarySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 5. DADOS DA EMPRESA CONTRATANTE (Campos 34 a 45)
+// 4. DADOS DA EMPRESA CONTRATANTE
 // -----------------------------------------------------------------------------
 const companySection = {
     id: "company",
@@ -327,7 +262,7 @@ const companySection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 6. ACIDENTE COM MATERIAL BIOLÓGICO (Campos 46 a 52)
+// 5. ACIDENTE COM MATERIAL BIOLÓGICO
 // -----------------------------------------------------------------------------
 const biologicalMaterialExposureSection = {
     id: "biological_exposure",
@@ -335,14 +270,14 @@ const biologicalMaterialExposureSection = {
     description: "Detalhes do acidente, circunstâncias e exames.",
     columns: 3,
     fields: [
-        // 46 Tipo de Exposição (Multi-select / Checkboxes represented as select options for form parity)
+        // Tipo de Exposição
         { name: "exp_type_percutaneous", label: "Tipo de Exposição: Percutânea", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "exp_type_intact_skin", label: "Tipo de Exposição: Pele íntegra", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "exp_type_mucosa", label: "Tipo de Exposição: Mucosa (oral/ocular)", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "exp_type_non_intact_skin", label: "Tipo de Exposição: Pele não íntegra", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "exp_type_others", label: "Tipo de Exposição: Outros", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
 
-        // 47 Material Orgânico
+        // Material Orgânico
         {
             name: "organic_material",
             label: "Material orgânico",
@@ -363,7 +298,7 @@ const biologicalMaterialExposureSection = {
         },
         { name: "organic_material_others", label: "Outro Material Orgânico", kind: "text", schema: optionalTextSchema, defaultValue: "" },
 
-        // 48 Circunstância do Acidente
+        // Circunstância do Acidente
         {
             name: "accident_circumstance",
             label: "Circunstância do Acidente",
@@ -392,7 +327,7 @@ const biologicalMaterialExposureSection = {
             ],
         },
 
-        // 49 Agente
+        // Agente
         {
             name: "agent",
             label: "Agente",
@@ -410,7 +345,7 @@ const biologicalMaterialExposureSection = {
             ],
         },
 
-        // 50 Uso de EPI
+        // Uso de EPI
         { name: "epi_glove", label: "Uso de EPI: Luva", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "epi_apron", label: "Uso de EPI: Avental", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "epi_glasses", label: "Uso de EPI: Óculos", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
@@ -418,7 +353,7 @@ const biologicalMaterialExposureSection = {
         { name: "epi_face_shield", label: "Uso de EPI: Proteção facial", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "epi_boots", label: "Uso de EPI: Bota", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
 
-        // 51 Situação vacinal
+        // Situação vacinal
         {
             name: "vaccine_status_hepb",
             label: "Situação vacinal do acidentado em relação à hepatite B (3 doses)",
@@ -432,7 +367,7 @@ const biologicalMaterialExposureSection = {
             ],
         },
 
-        // 52 Resultados de exames do acidentado
+        // Resultados de exames do acidentado
         { name: "exam_zero_anti_hiv", label: "Exame data ZERO: Anti-HIV", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
         { name: "exam_zero_hbsag", label: "Exame data ZERO: HbsAg", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
         { name: "exam_zero_anti_hbs", label: "Exame data ZERO: Anti-HBs", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
@@ -441,7 +376,7 @@ const biologicalMaterialExposureSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 7. PACIENTE FONTE E CONDUTA (Campos 53 a 55)
+// 6. PACIENTE FONTE E CONDUTA
 // -----------------------------------------------------------------------------
 const sourceAndConductSection = {
     id: "source_and_conduct",
@@ -449,7 +384,7 @@ const sourceAndConductSection = {
     description: "Resultados sorológicos do paciente fonte e condutas pós-acidente.",
     columns: 3,
     fields: [
-        // 53 Paciente Fonte Conhecida?
+        // Paciente Fonte Conhecida?
         {
             name: "source_patient_known",
             label: "Paciente Fonte Conhecida?",
@@ -459,13 +394,13 @@ const sourceAndConductSection = {
             options: yesNoIgnoredOptions,
         },
 
-        // 54 Resultados sorológicos paciente fonte
+        // Resultados sorológicos paciente fonte
         { name: "source_exam_hbsag", label: "Sorologia Paciente Fonte: Hbs Ag", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
         { name: "source_exam_anti_hiv", label: "Sorologia Paciente Fonte: Anti-HIV", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
         { name: "source_exam_anti_hbc", label: "Sorologia Paciente Fonte: Anti-HBc", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
         { name: "source_exam_anti_hcv", label: "Sorologia Paciente Fonte: Anti-HCV", kind: "select", schema: optionalTextSchema, defaultValue: "9", options: examResultOptions },
 
-        // 55 Conduta no momento do acidente
+        // Conduta no momento do acidente
         { name: "conduct_no_indication", label: "Conduta: Sem indicação de quimioprofilaxia", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "conduct_refused", label: "Conduta: Recusou quimioprofilaxia indicada", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
         { name: "conduct_azt_3tc", label: "Conduta: AZT+3TC", kind: "select", schema: optionalTextSchema, defaultValue: "", options: yesNoIgnoredOptions },
@@ -479,7 +414,7 @@ const sourceAndConductSection = {
 } satisfies NotificationSectionDefinition;
 
 // -----------------------------------------------------------------------------
-// 8. CONCLUSÃO (Campos 56 a 58)
+// 7. CONCLUSÃO
 // -----------------------------------------------------------------------------
 const conclusionSection = {
     id: "conclusion",
@@ -530,18 +465,10 @@ const conclusionSection = {
                 { label: "9 - Ignorado", value: "9" },
             ],
         },
-        {
-            name: "additional_observations",
-            label: "Informações complementares e observações",
-            kind: "text",
-            schema: optionalTextSchema,
-            defaultValue: "",
-        },
     ],
 } satisfies NotificationSectionDefinition;
 
 const sections = [
-    generalSection,
     patientSection,
     residenceSection,
     complementarySection,
