@@ -21,6 +21,8 @@ import { rotavirusNotificationDefinition } from "@/features/notifications/defini
 import { rabiesNotificationDefinition } from "@/features/notifications/definitions/rabies"
 import { plagueNotificationDefinition } from "@/features/notifications/definitions/plague"
 import { polioNotificationDefinition } from "@/features/notifications/definitions/polio"
+import { genericNotificationDefinition } from "@/features/notifications/definitions/generic"
+import { individualNotificationDefinition } from "@/features/notifications/definitions/individual"
 export {
   aidsChildrenNotificationDefinition,
   aidsNotificationDefinition,
@@ -44,7 +46,9 @@ export {
   rotavirusNotificationDefinition,
   rabiesNotificationDefinition,
   plagueNotificationDefinition,
-  polioNotificationDefinition
+  polioNotificationDefinition,
+  genericNotificationDefinition,
+  individualNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
@@ -71,7 +75,9 @@ export const notificationTypeDefinitionList = [
   rotavirusNotificationDefinition,
   rabiesNotificationDefinition,
   plagueNotificationDefinition,
-  polioNotificationDefinition
+  polioNotificationDefinition,
+  genericNotificationDefinition,
+  individualNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
@@ -97,5 +103,7 @@ export const notificationTypeDefinitions = {
   rotavirus: rotavirusNotificationDefinition,
   rabies: rabiesNotificationDefinition,
   plague: plagueNotificationDefinition,
-  polio: polioNotificationDefinition
+  polio: polioNotificationDefinition,
+  generic: genericNotificationDefinition,
+  individual: individualNotificationDefinition
 } as const
