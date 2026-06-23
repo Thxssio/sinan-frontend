@@ -18,6 +18,7 @@ import { pneumoconiosesNotificationDefinition } from "@/features/notifications/d
 import { mentalDisordersNotificationDefinition } from "@/features/notifications/definitions/mental_disorder"
 import { exanthematousDiseasesNotificationDefinition } from "@/features/notifications/definitions/exanthematous_diseases"
 import { rotavirusNotificationDefinition } from "@/features/notifications/definitions/rotavirus"
+import { rabiesNotificationDefinition } from "@/features/notifications/definitions/rabies"
 export {
   aidsChildrenNotificationDefinition,
   aidsNotificationDefinition,
@@ -38,7 +39,8 @@ export {
   pneumoconiosesNotificationDefinition,
   mentalDisordersNotificationDefinition,
   exanthematousDiseasesNotificationDefinition,
-  rotavirusNotificationDefinition
+  rotavirusNotificationDefinition,
+  rabiesNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
@@ -62,7 +64,8 @@ export const notificationTypeDefinitionList = [
   pneumoconiosesNotificationDefinition,
   mentalDisordersNotificationDefinition,
   exanthematousDiseasesNotificationDefinition,
-  rotavirusNotificationDefinition
+  rotavirusNotificationDefinition,
+  rabiesNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
@@ -85,5 +88,6 @@ export const notificationTypeDefinitions = {
   pneumoconioses: pneumoconiosesNotificationDefinition,
   mental_disorder: mentalDisordersNotificationDefinition,
   exanthematous_diseases: exanthematousDiseasesNotificationDefinition,
-  rotavirus: rotavirusNotificationDefinition
+  rotavirus: rotavirusNotificationDefinition,
+  rabies: rabiesNotificationDefinition
 } as const
