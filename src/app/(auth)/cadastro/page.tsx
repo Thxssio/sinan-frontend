@@ -77,13 +77,13 @@ export default function RegisterPage() {
           </h1>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground lg:mx-0">
             Solicite acesso institucional para registrar pacientes,
-            notificacoes e unidades de saude em uma area segura.
+            notificações e unidades de saúde em uma área segura.
           </p>
 
           <div className="mt-6 grid gap-3 text-left sm:grid-cols-3 lg:grid-cols-1">
             {[
               "Acesso protegido por e-mail institucional",
-              "Cadastro integrado ao painel de notificacoes",
+              "Cadastro integrado ao painel de notificações",
               "Experiencia otimizada para celular e computador",
             ].map((item) => (
               <div
@@ -158,7 +158,7 @@ export default function RegisterPage() {
                     {...form.register("password")}
                     className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-11 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                     id="password"
-                    placeholder="Minimo 6 caracteres"
+                    placeholder="Mínimo 6 caracteres"
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
                   />
@@ -206,8 +206,8 @@ export default function RegisterPage() {
                     }
                     aria-label={
                       showPasswordConfirmation
-                        ? "Ocultar confirmacao de senha"
-                        : "Mostrar confirmacao de senha"
+                        ? "Ocultar confirmação de senha"
+                        : "Mostrar confirmação de senha"
                     }
                   >
                     {showPasswordConfirmation ? (
@@ -241,7 +241,7 @@ export default function RegisterPage() {
             </button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Ja possui acesso?{" "}
+              Já possui acesso?{" "}
               <Link
                 className="font-semibold text-brand transition-colors hover:text-brand-hover"
                 href={ROUTES.login}

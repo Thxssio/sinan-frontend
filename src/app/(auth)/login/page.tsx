@@ -176,7 +176,7 @@ export default function LoginPage() {
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
-              Ainda nao tem acesso?{" "}
+              Ainda não tem acesso?{" "}
               <Link
                 className="font-semibold text-brand transition-colors hover:text-brand-hover"
                 href={ROUTES.register}

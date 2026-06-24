@@ -475,6 +475,6 @@ export const pregnantSyphilisNotificationDefinition = defineNotificationType({
   id: 90,
   slug: "sifilis-gestante",
   label: "Sífilis em Gestante",
-  description: `Definição de caso:Situação1-Mulherassintomáticaparasífilisque,duranteopré-natal,opartoe/ouopuerpério,apresentepelomenosumtestereagentetreponêmicoE/OUnãotreponêmico,comqualquertitulação,semregistrodetratamentoprévio.Situação2-Mulhersintomáticaaparasífilisque,duranteopré-natal,opartoe/ouopuerpério,apresentepelomenosumtestereagentetreponêmicoE/OUnãotreponêmico,comqualquertitulação.aParamaisinformaçõessobreasintomatologiadasífilis,consultaroGuiadeVigilanciaemSaúdee/ouProtocoloClínicoeDiretrizesTerapêuticasparaAtençãoàsPessoas com Infecções Sexualmente Transmissíveis (IST), disponível respectivamente em www.saude.gov.br/svs e www.aids.gov.br/pcdt.Situação3-Mulherque,duranteopré-natal,opartoe/ouopuerpério,apresentetestenãotreponêmicoreagentecomqualquertitulação E teste treponêmico reagente, independentemente de sintomatologia da sífilis e de tratamento prévio.* Casos confirmados de cicatriz sorológica não devem ser notificados.`,
+  description: `Definição de caso para mulher que, durante o pré-natal, parto ou puerpério, apresente teste treponêmico e/ou não treponêmico reagente, com qualquer titulação, sem registro de tratamento prévio. Consulte o Guia de Vigilância em Saúde e os protocolos clínicos vigentes para detalhes de sintomatologia, diagnóstico e tratamento.`,
   sections,
 })

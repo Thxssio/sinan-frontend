@@ -6,6 +6,7 @@ import { DashboardLoadingState } from "@/app/(dashboard)/dashboard/dashboard-loa
 import { BarChart } from "@/components/charts/bar-chart"
 import { LineChart } from "@/components/charts/line-chart"
 import { PageTitle } from "@/components/layout/page-title"
+import { DiseaseMap } from "@/components/maps/disease-map"
 import {
   Card,
   CardAction,
@@ -15,11 +16,15 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { useDashboard } from "@/hooks/use-dashboard"
+import { useNotifications } from "@/hooks/use-notifications"
+import { useUnits } from "@/hooks/use-units"
 
 const numberFormatter = new Intl.NumberFormat("pt-BR")
 
 export default function DashboardPage() {
   const dashboardQuery = useDashboard()
+  const notificationsQuery = useNotifications()
+  const unitsQuery = useUnits()
   const summary = dashboardQuery.data
 
   if (dashboardQuery.isPending && !summary) {
@@ -32,7 +37,7 @@ export default function DashboardPage() {
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          title="Notificacoes"
+          title="Notificações"
           value={summary?.totalNotifications}
           icon={Bell}
         />
@@ -42,22 +47,28 @@ export default function DashboardPage() {
           icon={ClipboardList}
         />
         <MetricCard
-          title="Em analise"
+          title="Em análise"
           value={summary?.inReviewNotifications}
           icon={Search}
         />
         <MetricCard
-          title="Concluidas"
+          title="Concluídas"
           value={summary?.completedNotifications}
           icon={CheckCircle2}
         />
       </section>
 
+      <DiseaseMap
+        notifications={notificationsQuery.data?.data ?? []}
+        units={unitsQuery.data?.data ?? []}
+        isLoading={notificationsQuery.isPending || unitsQuery.isPending}
+      />
+
       <section className="grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Evolucao mensal</CardTitle>
-            <CardDescription>Notificacoes registradas por mes.</CardDescription>
+            <CardTitle>Evolução mensal</CardTitle>
+            <CardDescription>Notificações registradas por mês.</CardDescription>
           </CardHeader>
           <CardContent>
             <LineChart
@@ -67,12 +78,12 @@ export default function DashboardPage() {
               lines={[
                 {
                   key: "notifications",
-                  label: "Notificacoes",
+                  label: "Notificações",
                   color: "var(--chart-1)",
                 },
                 {
                   key: "completed",
-                  label: "Concluidas",
+                  label: "Concluídas",
                   color: "var(--chart-2)",
                 },
               ]}
@@ -83,7 +94,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Status</CardTitle>
-            <CardDescription>Distribuicao das notificacoes.</CardDescription>
+            <CardDescription>Distribuição das notificações.</CardDescription>
           </CardHeader>
           <CardContent>
             <BarChart

@@ -15,14 +15,14 @@ import {
 import { ROUTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 
-const navItems = [
+export const dashboardNavItems = [
   {
     label: "Dashboard",
     href: ROUTES.dashboard,
     icon: LayoutDashboard,
   },
   {
-    label: "Notificacoes",
+    label: "Notificações",
     href: ROUTES.notifications,
     icon: Bell,
   },
@@ -37,12 +37,12 @@ const navItems = [
     icon: Building2,
   },
   {
-    label: "Relatorios",
+    label: "Relatórios",
     href: ROUTES.reports,
     icon: FileText,
   },
   {
-    label: "Configuracoes",
+    label: "Configurações",
     href: ROUTES.settings,
     icon: Settings,
   },
@@ -64,7 +64,7 @@ export function AppSidebar() {
         />
       </div>
       <nav className="grid gap-1 p-3">
-        {navItems.map((item) => {
+        {dashboardNavItems.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(`${item.href}/`)
           const Icon = item.icon

@@ -58,6 +58,12 @@ type AidsPatientSnapshot = {
   patient_birth_date: string
 }
 
+type TimelineItem = {
+  date: string
+  label: string
+  source: string
+}
+
 type NotificationFormProps = {
   onSubmit: (values: NotificationSchema) => void | Promise<void>
   isSubmitting?: boolean
@@ -104,6 +110,117 @@ function getFieldSpanClass(columns: 1 | 2 | 3 = 2) {
   }
 
   return "col-span-1"
+}
+
+function isFieldEmpty(field: NotificationFieldDefinition, value: unknown) {
+  if (field.kind === "checkbox") {
+    return value === undefined || value === null
+  }
+
+  if (field.kind === "number") {
+    return value === undefined || value === null || Number.isNaN(value)
+  }
+
+  return value === undefined || value === null || String(value).trim() === ""
+}
+
+function buildRequiredFieldErrors(
+  sections: readonly NotificationSectionDefinition[],
+  formData: Record<string, unknown>
+) {
+  return sections.flatMap((section) =>
+    section.fields
+      .filter((field) => isFieldEmpty(field, formData[field.name]))
+      .map((field) => ({
+        name: field.name,
+        label: field.label,
+      }))
+  )
+}
+
+function formatDateForTimeline(value: string) {
+  const [year, month, day] = value.split("-").map(Number)
+
+  if (!year || !month || !day) {
+    return value
+  }
+
+  return new Intl.DateTimeFormat("pt-BR").format(
+    new Date(year, month - 1, day)
+  )
+}
+
+function isDateValue(value: unknown): value is string {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)
+}
+
+function buildTimelineItems({
+  selectedPatient,
+  newPatientBirthDate,
+  notificationDate,
+  occurrenceDate,
+  sections,
+  formData,
+}: {
+  selectedPatient?: Patient
+  newPatientBirthDate: string
+  notificationDate?: string
+  occurrenceDate?: string
+  sections: readonly NotificationSectionDefinition[]
+  formData: Record<string, unknown>
+}) {
+  const items: TimelineItem[] = []
+  const patientBirthDate = selectedPatient?.birth_date ?? newPatientBirthDate
+
+  if (isDateValue(patientBirthDate)) {
+    items.push({
+      date: patientBirthDate,
+      label: "Nascimento do paciente",
+      source: "Cadastro do paciente",
+    })
+  }
+
+  if (isDateValue(occurrenceDate)) {
+    items.push({
+      date: occurrenceDate,
+      label: "Ocorrência do agravo",
+      source: "Notificação",
+    })
+  }
+
+  sections.forEach((section) => {
+    section.fields.forEach((field) => {
+      const value = formData[field.name]
+
+      if (field.kind === "date" && isDateValue(value)) {
+        items.push({
+          date: value,
+          label: field.label,
+          source: section.title,
+        })
+      }
+    })
+  })
+
+  if (isDateValue(notificationDate)) {
+    items.push({
+      date: notificationDate,
+      label: "Registro da notificação",
+      source: "Sistema",
+    })
+  }
+
+  return items
+    .filter(
+      (item, index, list) =>
+        list.findIndex(
+          (current) =>
+            current.date === item.date &&
+            current.label === item.label &&
+            current.source === item.source
+        ) === index
+    )
+    .sort((left, right) => left.date.localeCompare(right.date))
 }
 
 function matchesPatientSearch(patient: Patient, searchTerm: string) {
@@ -248,6 +365,18 @@ export function NotificationForm({
     control: form.control,
     name: "status",
   })
+  const notificationDate = useWatch({
+    control: form.control,
+    name: "notification_date",
+  })
+  const occurrenceDate = useWatch({
+    control: form.control,
+    name: "occurrence_date",
+  })
+  const formData = useWatch({
+    control: form.control,
+    name: "form_data",
+  })
   const newPatientName = newPatient?.name ?? ""
   const newPatientDocument = newPatient?.document ?? ""
   const newPatientBirthDate = newPatient?.birth_date ?? ""
@@ -267,6 +396,14 @@ export function NotificationForm({
       .filter((patient) => matchesPatientSearch(patient, normalizedPatientSearch))
       .slice(0, 8)
     : []
+  const timelineItems = buildTimelineItems({
+    selectedPatient,
+    newPatientBirthDate,
+    notificationDate,
+    occurrenceDate,
+    sections: definition.sections,
+    formData,
+  })
 
   React.useEffect(() => {
     if (units.length === 0) {
@@ -338,11 +475,11 @@ export function NotificationForm({
     createPatient.isPending
       ? "Cadastrando paciente..."
       : isSubmitting
-        ? "Salvando notificacao..."
+        ? "Salvando notificação..."
         : status === "resolved"
-          ? "Finalizar notificacao"
+          ? "Finalizar notificação"
           : status === "in_review"
-            ? "Salvar e enviar para analise"
+            ? "Salvar e enviar para análise"
             : "Salvar pendente"
 
   function handlePatientModeChange(mode: NotificationFormSchema["patient_mode"]) {
@@ -381,6 +518,32 @@ export function NotificationForm({
 
     try {
       const parsedValues = notificationFormSchema.parse(values)
+      const selectedDefinition = getNotificationTypeDefinition(
+        parsedValues.notification_type_slug
+      )
+      const requiredFieldErrors = buildRequiredFieldErrors(
+        selectedDefinition.sections,
+        parsedValues.form_data
+      )
+
+      form.clearErrors("form_data")
+
+      if (requiredFieldErrors.length > 0) {
+        requiredFieldErrors.forEach((fieldError) => {
+          form.setError(`form_data.${fieldError.name}` as never, {
+            type: "required",
+            message: "Campo obrigatório",
+          })
+        })
+        setSubmitErrorMessage(
+          `Preencha todos os campos obrigatórios da ficha. Pendentes: ${requiredFieldErrors
+            .slice(0, 5)
+            .map((fieldError) => fieldError.label)
+            .join(", ")}${requiredFieldErrors.length > 5 ? "..." : ""}`
+        )
+        return
+      }
+
       let patientId = parsedValues.patient_id
 
       if (parsedValues.patient_mode === "new") {
@@ -427,10 +590,10 @@ export function NotificationForm({
               <ClipboardList className="size-5" />
             </div>
             <div className="grid gap-1">
-              <h2 className="text-lg font-semibold">Identificacao da notificacao</h2>
+              <h2 className="text-lg font-semibold">Identificação da notificação</h2>
               <p className="text-sm text-muted-foreground">
-                Escolha o formulario, vincule a unidade e selecione um paciente
-                existente ou cadastre um novo sem sair da notificacao.
+                Escolha o formulário, vincule a unidade e selecione um paciente
+                existente ou cadastre um novo sem sair da notificação.
               </p>
             </div>
           </div>
@@ -441,7 +604,7 @@ export function NotificationForm({
                 <h3 className="text-base font-semibold">Paciente</h3>
                 <p className="text-sm text-muted-foreground">
                   Pesquise por nome ou CPF para localizar rapidamente o cadastro
-                  correto. Se nao encontrar, crie o paciente neste fluxo.
+                  correto. Se não encontrar, crie o paciente neste fluxo.
                 </p>
               </div>
 
@@ -490,7 +653,7 @@ export function NotificationForm({
                   <p className="text-xs text-muted-foreground">
                     {patientsQuery.isPending
                       ? "Carregando pacientes..."
-                      : "A busca usa os pacientes ja carregados na tela."}
+                      : "A busca usa os pacientes já carregados na tela."}
                   </p>
                 </div>
 
@@ -500,10 +663,10 @@ export function NotificationForm({
                       Paciente selecionado: {selectedPatient.name}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      CPF: {selectedPatient.document || "Nao informado"}
+                      CPF: {selectedPatient.document || "Não informado"}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Nascimento: {selectedPatient.birth_date || "Nao informado"}
+                      Nascimento: {selectedPatient.birth_date || "Não informado"}
                     </p>
                   </div>
                 ) : null}
@@ -522,7 +685,7 @@ export function NotificationForm({
                             {patient.name}
                           </span>
                           <span className="text-sm text-muted-foreground">
-                            CPF: {patient.document || "Nao informado"}
+                            CPF: {patient.document || "Não informado"}
                           </span>
                         </button>
                       ))}
@@ -554,8 +717,8 @@ export function NotificationForm({
             ) : (
               <div className="grid gap-4">
                 <p className="text-sm text-muted-foreground">
-                  Os dados abaixo serao validados e o paciente sera criado
-                  automaticamente antes do envio da notificacao.
+                  Os dados abaixo serão validados e o paciente será criado
+                  automaticamente antes do envio da notificação.
                 </p>
 
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -603,9 +766,10 @@ export function NotificationForm({
             <SelectField
               control={form.control}
               name="notification_type_slug"
-              label="Tipo de formulario"
+              label="Tipo de formulário"
               options={notificationTypeOptions}
               onValueChange={(value) => {
+                form.clearErrors("form_data")
                 form.setValue(
                   "form_data",
                   buildFormDataDefaults(
@@ -631,12 +795,12 @@ export function NotificationForm({
             <DateField
               control={form.control}
               name="notification_date"
-              label="Data da notificacao"
+              label="Data da notificação"
             />
             <DateField
               control={form.control}
               name="occurrence_date"
-              label="Data da ocorrencia"
+              label="Data da ocorrência"
             />
           </div>
 
@@ -645,7 +809,49 @@ export function NotificationForm({
             <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">
               {definition.description}
             </p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Todos os campos da ficha são obrigatórios. Campos com valor padrão
+              já vêm preenchidos automaticamente e podem ser ajustados antes do
+              envio.
+            </p>
           </div>
+        </section>
+
+        <section className="grid gap-4 rounded-2xl border border-border bg-card p-5">
+          <div className="grid gap-1">
+            <h3 className="text-base font-semibold">Cronologia do paciente</h3>
+            <p className="text-sm text-muted-foreground">
+              Linha do tempo consolidada a partir do cadastro do paciente, da
+              ocorrência, da notificação e das datas preenchidas nesta ficha.
+            </p>
+          </div>
+
+          {timelineItems.length > 0 ? (
+            <ol className="grid gap-3">
+              {timelineItems.map((item) => (
+                <li
+                  className="grid grid-cols-[8rem_1fr] gap-3 rounded-xl border border-border px-4 py-3 text-sm"
+                  key={`${item.date}-${item.label}-${item.source}`}
+                >
+                  <time className="font-medium text-foreground">
+                    {formatDateForTimeline(item.date)}
+                  </time>
+                  <div className="grid gap-0.5">
+                    <span className="font-medium text-foreground">
+                      {item.label}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {item.source}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <div className="rounded-xl border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
+              Preencha datas da ficha para montar a cronologia.
+            </div>
+          )}
         </section>
 
         {definition.sections.map((section: NotificationSectionDefinition) => (
@@ -673,7 +879,7 @@ export function NotificationForm({
                       <SelectField
                         control={form.control}
                         name={name}
-                        label={field.label}
+                        label={`${field.label} *`}
                         placeholder={field.placeholder}
                         options={field.options ?? []}
                       />
@@ -681,14 +887,14 @@ export function NotificationForm({
                       <TextareaField
                         control={form.control}
                         name={name}
-                        label={field.label}
+                        label={`${field.label} *`}
                         placeholder={field.placeholder}
                       />
                     ) : field.kind === "date" ? (
                       <DateField
                         control={form.control}
                         name={name}
-                        label={field.label}
+                        label={`${field.label} *`}
                       />
                     ) : field.kind === "checkbox" ? (
                       <FormField
@@ -707,7 +913,7 @@ export function NotificationForm({
                               />
                             </FormControl>
                             <FormLabel className="text-sm font-normal">
-                              {field.label}
+                              {field.label} *
                             </FormLabel>
                             <FormMessage />
                           </FormItem>
@@ -717,7 +923,7 @@ export function NotificationForm({
                       <InputField
                         control={form.control}
                         name={name}
-                        label={field.label}
+                        label={`${field.label} *`}
                         placeholder={field.placeholder}
                         type={field.kind === "number" ? "number" : "text"}
                       />
@@ -733,8 +939,8 @@ export function NotificationForm({
           <TextareaField
             control={form.control}
             name="notes"
-            label="Observacoes gerais"
-            placeholder="Registre complementos relevantes sobre a notificacao."
+            label="Observações gerais"
+            placeholder="Registre complementos relevantes sobre a notificação."
           />
         </section>
 

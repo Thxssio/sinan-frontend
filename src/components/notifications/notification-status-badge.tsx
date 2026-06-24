@@ -13,7 +13,7 @@ const statusMap: Record<
     variant: "outline",
   },
   in_review: {
-    label: "Em analise",
+    label: "Em análise",
     variant: "default",
   },
   resolved: {

@@ -170,7 +170,7 @@ export function defineNotificationType<
 
 export const yesNoUnknownOptions = [
   { label: "Sim", value: "yes" },
-  { label: "Nao", value: "no" },
+  { label: "Não", value: "no" },
   { label: "Ignorado", value: "unknown" },
 ] satisfies NotificationFieldOption[]
 
@@ -212,8 +212,8 @@ export const screeningTestOptions = [
 
 export const ministryProtocolOptions = [
   { label: "Confirmado", value: "confirmed" },
-  { label: "Em investigacao", value: "under_investigation" },
-  { label: "Nao confirmado", value: "not_confirmed" },
+  { label: "Em investigação", value: "under_investigation" },
+  { label: "Não confirmado", value: "not_confirmed" },
 ] satisfies NotificationFieldOption[]
 
 export const healthOutcomeOptions = [

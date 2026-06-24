@@ -15,7 +15,7 @@ export default function ReportsPage() {
 
   return (
     <>
-      <PageTitle title="Relatorios" />
+      <PageTitle title="Relatórios" />
       <Card>
         <CardHeader>
           <CardTitle>Resumo</CardTitle>
@@ -26,7 +26,7 @@ export default function ReportsPage() {
           ) : (
             <dl className="grid gap-3 text-sm sm:grid-cols-3">
               <div>
-                <dt className="text-muted-foreground">Notificacoes</dt>
+                <dt className="text-muted-foreground">Notificações</dt>
                 <dd className="text-2xl font-semibold">
                   {reportQuery.data?.totalNotifications}
                 </dd>

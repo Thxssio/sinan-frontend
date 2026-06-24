@@ -10,6 +10,9 @@ const mockUnits: Unit[] = [
     name: "UBS Centro",
     city: "Sao Paulo",
     state: "SP",
+    cnes_code: "0000001",
+    latitude: -23.55052,
+    longitude: -46.63331,
     created_at: "2026-04-01T10:00:00.000Z",
   },
   {
@@ -17,6 +20,9 @@ const mockUnits: Unit[] = [
     name: "UPA Norte",
     city: "Sao Paulo",
     state: "SP",
+    cnes_code: "0000002",
+    latitude: -23.4801,
+    longitude: -46.6179,
     created_at: "2026-04-02T10:00:00.000Z",
   },
 ]

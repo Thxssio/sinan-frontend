@@ -16,7 +16,24 @@ const columns: DataTableColumn<Patient>[] = [
   {
     key: "name",
     header: "Nome",
-    cell: (row) => row.name,
+    cell: (row) => (
+      <Link
+        className="font-medium text-brand transition-colors hover:text-brand-hover"
+        href={`${ROUTES.patients}/${row.id}`}
+      >
+        {row.name}
+      </Link>
+    ),
+  },
+  {
+    key: "actions",
+    header: "",
+    cell: (row) => (
+      <Button variant="outline" size="sm" asChild>
+        <Link href={`${ROUTES.patients}/${row.id}`}>Ver cronologia</Link>
+      </Button>
+    ),
+    className: "text-right",
   },
   {
     key: "document",

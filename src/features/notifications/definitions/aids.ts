@@ -404,7 +404,7 @@ export const aidsNotificationDefinition = defineNotificationType({
   id: 1,
   slug: "aids",
   label: "AIDS",
-  description: `Formulario com dados do paciente, historico sexual, diagnostico e evolucao do caso.
+  description: `Formulário com dados do paciente, histórico sexual, diagnóstico e evolução do caso.
 
 A AIDS é o estágio mais avançado da doença que ataca o sistema imunológico. A Síndrome da Imunodeficiência Adquirida, como também é chamada, é causada pelo HIV. Como esse vírus ataca as células de defesa do nosso corpo, o organismo fica mais vulnerável a diversas doenças, de um simples resfriado a infecções mais graves como tuberculose ou câncer. O próprio tratamento dessas doenças fica prejudicado.
 

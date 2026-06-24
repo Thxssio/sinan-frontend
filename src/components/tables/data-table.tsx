@@ -30,35 +30,70 @@ export function DataTable<TData>({
   emptyMessage = "Nenhum registro encontrado.",
 }: DataTableProps<TData>) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          {columns.map((column) => (
-            <TableHead key={column.key} className={column.className}>
-              {column.header}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <>
+      <div className="grid gap-3 md:hidden">
         {data.length ? (
           data.map((row) => (
-            <TableRow key={getRowKey(row)}>
+            <article
+              className="grid gap-3 rounded-xl border border-border bg-card p-4"
+              key={getRowKey(row)}
+            >
               {columns.map((column) => (
-                <TableCell key={column.key} className={column.className}>
-                  {column.cell(row)}
-                </TableCell>
+                <div
+                  className="grid gap-1 border-b border-border/70 pb-3 last:border-0 last:pb-0"
+                  key={column.key}
+                >
+                  {column.header ? (
+                    <div className="text-xs font-medium uppercase text-muted-foreground">
+                      {column.header}
+                    </div>
+                  ) : null}
+                  <div className="text-sm text-foreground">
+                    {column.cell(row)}
+                  </div>
+                </div>
               ))}
-            </TableRow>
+            </article>
           ))
         ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              {emptyMessage}
-            </TableCell>
-          </TableRow>
+          <div className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+            {emptyMessage}
+          </div>
         )}
-      </TableBody>
-    </Table>
+      </div>
+
+      <div className="hidden md:block">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {columns.map((column) => (
+                <TableHead key={column.key} className={column.className}>
+                  {column.header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.length ? (
+              data.map((row) => (
+                <TableRow key={getRowKey(row)}>
+                  {columns.map((column) => (
+                    <TableCell key={column.key} className={column.className}>
+                      {column.cell(row)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   )
 }

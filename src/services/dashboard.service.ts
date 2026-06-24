@@ -31,8 +31,8 @@ const mockDashboardSummary: DashboardSummary = {
   byStatus: [
     { status: "Rascunho", total: 13 },
     { status: "Enviadas", total: 31 },
-    { status: "Em analise", total: 18 },
-    { status: "Concluidas", total: 22 },
+    { status: "Em análise", total: 18 },
+    { status: "Concluídas", total: 22 },
   ],
 }
 

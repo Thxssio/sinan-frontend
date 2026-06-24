@@ -13,15 +13,15 @@ const notificationTypeSlugSchema = z.custom<NotificationTypeSlug>(
   (value) =>
     typeof value === "string" &&
     notificationTypeSlugs.includes(value as NotificationTypeSlug),
-  "Tipo de notificacao invalido"
+  "Tipo de notificação inválido"
 )
 
 const notificationBaseSchema = z.object({
-  patient_id: z.coerce.number().int().positive("Paciente obrigatorio"),
-  unit_id: z.coerce.number().int().positive("Unidade obrigatoria"),
+  patient_id: z.coerce.number().int().positive("Paciente obrigatório"),
+  unit_id: z.coerce.number().int().positive("Unidade obrigatória"),
   status: z.enum(notificationStatuses),
-  notification_date: z.string().min(1, "Data da notificacao obrigatoria"),
-  occurrence_date: optionalTextSchema,
+  notification_date: z.string().min(1, "Data da notificação obrigatória"),
+  occurrence_date: z.string().min(1, "Data da ocorrência obrigatória"),
   notes: optionalTextSchema,
 })
 
@@ -30,7 +30,7 @@ const notificationDraftPatientSchema = patientSchema.extend({
 })
 
 const notificationFormBaseSchema = notificationBaseSchema.extend({
-  patient_id: z.coerce.number().int().positive("Paciente obrigatorio").optional(),
+  patient_id: z.coerce.number().int().positive("Paciente obrigatório").optional(),
   patient_mode: z.enum(["existing", "new"]),
   new_patient: notificationDraftPatientSchema,
 })

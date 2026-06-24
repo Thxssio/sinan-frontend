@@ -40,10 +40,10 @@ const workflowCopy: Record<
   pending: {
     stage: "Editando",
     description:
-      "A notificacao ainda esta em preenchimento e pode receber complementos.",
+      "A notificação ainda esta em preenchimento e pode receber complementos.",
     actions: [
       {
-        label: "Enviar para analise",
+        label: "Enviar para análise",
         nextStatus: "in_review",
       },
     ],
@@ -51,10 +51,10 @@ const workflowCopy: Record<
   in_review: {
     stage: "Completando",
     description:
-      "A equipe esta revisando dados laboratoriais, classificacao e desfecho.",
+      "A equipe está revisando dados laboratoriais, classificação e desfecho.",
     actions: [
       {
-        label: "Finalizar notificacao",
+        label: "Finalizar notificação",
         nextStatus: "resolved",
       },
       {
@@ -67,10 +67,10 @@ const workflowCopy: Record<
   resolved: {
     stage: "Finalizada",
     description:
-      "Caso consolidado. Use a reabertura apenas quando surgir nova informacao clinica.",
+      "Caso consolidado. Use a reabertura apenas quando surgir nova informação clínica.",
     actions: [
       {
-        label: "Reabrir em analise",
+        label: "Reabrir em análise",
         nextStatus: "in_review",
         variant: "outline",
       },
@@ -123,7 +123,7 @@ export default function NotificationDetailsPage() {
     <>
       <PageTitle
         title={`Notificacao #${params.id}`}
-        description="Acompanhe a evolucao da notificacao e os dados especificos do formulario."
+        description="Acompanhe a evolução da notificação e os dados específicos do formulário."
       />
       <Card>
         <CardHeader>
@@ -149,23 +149,23 @@ export default function NotificationDetailsPage() {
                   </div>
                   <p>
                     <span className="text-muted-foreground">
-                      Data da notificacao:
+                      Data da notificação:
                     </span>{" "}
                     {formatNotificationDate(notification.notification_date)}
                   </p>
                   <p>
                     <span className="text-muted-foreground">
-                      Data da ocorrencia:
+                      Data da ocorrência:
                     </span>{" "}
                     {formatNotificationDate(notification.occurrence_date)}
                   </p>
                   <p>
-                    <span className="text-muted-foreground">Formulario:</span>{" "}
+                    <span className="text-muted-foreground">Formulário:</span>{" "}
                     {definition.label}
                   </p>
                   <p>
-                    <span className="text-muted-foreground">Observacoes:</span>{" "}
-                    {notification.notes || "Sem observacoes gerais."}
+                    <span className="text-muted-foreground">Observações:</span>{" "}
+                    {notification.notes || "Sem observações gerais."}
                   </p>
                 </div>
 
@@ -238,7 +238,7 @@ export default function NotificationDetailsPage() {
               ))}
             </>
           ) : (
-            <p>Registro nao encontrado.</p>
+            <p>Registro não encontrado.</p>
           )}
         </CardContent>
       </Card>

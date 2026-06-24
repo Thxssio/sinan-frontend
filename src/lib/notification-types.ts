@@ -14,7 +14,7 @@ type NotificationTypeDefinitionMap = typeof notificationTypeDefinitions
 
 export const notificationStatusOptions = [
   { label: "Pendente", value: "pending" },
-  { label: "Em analise", value: "in_review" },
+  { label: "Em análise", value: "in_review" },
   { label: "Resolvida", value: "resolved" },
 ] as const
 
@@ -67,7 +67,7 @@ export function formatNotificationFieldValue(
     rawValue === "" ||
     (typeof rawValue === "number" && Number.isNaN(rawValue))
   ) {
-    return "Nao informado"
+    return "Não informado"
   }
 
   if (field.kind === "select") {
@@ -86,7 +86,7 @@ export function formatNotificationFieldValue(
   }
 
   if (field.kind === "checkbox") {
-    return rawValue ? "Sim" : "Nao"
+    return rawValue ? "Sim" : "Não"
   }
 
   return String(rawValue)
@@ -94,7 +94,7 @@ export function formatNotificationFieldValue(
 
 export function formatNotificationDate(value?: string) {
   if (!value) {
-    return "Nao informada"
+    return "Não informada"
   }
 
   return formatDate(value)

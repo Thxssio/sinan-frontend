@@ -21,8 +21,8 @@ export default function NewNotificationPage() {
   return (
     <>
       <PageTitle
-        title="Nova notificacao"
-        description="Escolha o formulario epidemiologico e preencha os blocos dinamicos do agravo."
+        title="Nova notificação"
+        description="Escolha o formulário epidemiologico e preencha os blocos dinamicos do agravo."
       />
       <Card>
         <CardContent>

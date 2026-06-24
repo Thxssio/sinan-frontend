@@ -4,9 +4,9 @@ import { Card, CardContent } from "@/components/ui/card"
 export default function SettingsPage() {
   return (
     <>
-      <PageTitle title="Configuracoes" />
+      <PageTitle title="Configurações" />
       <Card>
-        <CardContent>Configuracoes iniciais do sistema.</CardContent>
+        <CardContent>Configurações iniciais do sistema.</CardContent>
       </Card>
     </>
   )

@@ -19,7 +19,7 @@ const optionalTextSchema = z.string().optional();
 const patientSection = {
     id: "patient",
     title: "Dados do Paciente",
-    description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
+    description: "Capture o retrato do paciente na notificação, mesmo quando ele ja existe no cadastro geral.",
     columns: 3,
     fields: [
         {

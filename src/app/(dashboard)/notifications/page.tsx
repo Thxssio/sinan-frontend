@@ -54,8 +54,8 @@ export default function NotificationsPage() {
   return (
     <>
       <PageTitle
-        title="Notificacoes"
-        description="Registros digitais de AIDS e acidentes por animais peconhentos, com base preparada para novos formularios."
+        title="Notificações"
+        description="Registros digitais de AIDS e acidentes por animais peçonhentos, com base preparada para novos formulários."
         action={
           <Button asChild>
             <Link href={`${ROUTES.notifications}/new`}>

@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export const patientSchema = z.object({
-  name: z.string().min(3, "Nome obrigatorio"),
+  name: z.string().min(3, "Nome obrigatório"),
   document: z.string().optional(),
   birth_date: z.string().optional(),
   phone: z.string().optional(),
