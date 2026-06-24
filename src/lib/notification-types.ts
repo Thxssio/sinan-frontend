@@ -85,6 +85,10 @@ export function formatNotificationFieldValue(
     return new Intl.NumberFormat("pt-BR").format(rawValue)
   }
 
+  if (field.kind === "checkbox") {
+    return rawValue ? "Sim" : "Nao"
+  }
+
   return String(rawValue)
 }
 

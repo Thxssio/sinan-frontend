@@ -726,7 +726,7 @@ const sections = [
 export const yellowFeverNotificationDefinition = defineNotificationType({
   id: 6,
   slug: "yellow_fever",
-  label: "FEBRE AMARELA",
+  label: "Febre Amarela",
   description: `CASO SUSPEITO: Indivíduo com quadro febril agudo, icterícia e/ou manifestações hemorrágicas, residente ou procedente de área de risco para febre amarela ou de locais com ocorrência de epizootias em primatas não humanos ou isolamento de vírus em vetores, nos últimos 15 dias, não vacinados contra febre amarela ou com estado vacinal ignorado.`,
   sections,
 })

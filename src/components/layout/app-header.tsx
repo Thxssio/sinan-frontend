@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { LogOut, Menu } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { APP_NAME, ROUTES } from "@/lib/constants"
+import { ROUTES } from "@/lib/constants"
 import { useAuth } from "@/hooks/use-auth"
 
 export function AppHeader() {
@@ -29,19 +29,13 @@ export function AppHeader() {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 lg:hidden">
             <Image
-              src="/sinan.png"
+              src="/SINAN.png"
               alt="SINAN"
-              width={32}
-              height={30}
+              width={947}
+              height={305}
               className="h-8 w-auto object-contain"
               priority
             />
-            <div>
-              <p className="text-sm font-semibold">{APP_NAME}</p>
-              <p className="text-xs text-muted-foreground">
-                Vigilancia em saude
-              </p>
-            </div>
           </div>
           <div>
             <p className="text-xs text-muted-foreground">

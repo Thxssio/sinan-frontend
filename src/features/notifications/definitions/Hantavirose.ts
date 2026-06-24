@@ -813,7 +813,7 @@ const sections = [
 export const hantavirusNotificationDefinition = defineNotificationType({
   id: 30,
   slug: "hantavirose",
-  label: "HANTAVIROSE",
+  label: "Hantavirose",
   description: `Caso suspeito: Paciente com febre, mialgia, cefaléia e insuficiência respiratória aguda de etiologia não determinada, na primeira semana da doença ou exposição a situações de risco até 60 dias anteriores ao início dos sintomas.`,
   sections,
 })

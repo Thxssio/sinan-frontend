@@ -804,7 +804,7 @@ const conclusionSection = {
 export const venomousAnimalNotificationDefinition = defineNotificationType({
   id: 2,
   slug: "venomous_animal",
-  label: "Acidente por animal peconhento",
+  label: "Acidente por Animal Peçonhento",
   description:
     "Formulario com dados do acidente, manifestacoes clinicas, tratamento e evolucao.",
   sections,

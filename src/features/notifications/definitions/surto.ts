@@ -2,13 +2,11 @@ import { z } from "zod";
 
 import {
   defineNotificationType,
-  educationLevelOptions,
-  raceColorOptions,
-  sexOptions,
   type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared"
 
 const optionalTextSchema = z.string().optional();
+const optionalNumberSchema = z.number().optional();
 
 const sections = [
   {
@@ -306,7 +304,7 @@ const sections = [
 export const outbreakNotificationDefinition = defineNotificationType({
   id: 110,
   slug: "surto",
-  label: "INVESTIGAÇÃO DE SURTO",
+  label: "Investigação de Surto",
   description: `Ficha de notificação e acompanhamento epidemiológico para investigação de surtos conforme diretrizes estabelecidas pelo SINAN.`,
   sections,
 })

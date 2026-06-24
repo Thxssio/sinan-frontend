@@ -29,7 +29,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  if (pathname === ROUTES.login && token) {
+  if ((pathname === ROUTES.login || pathname === ROUTES.register) && token) {
     const dashboardUrl = request.nextUrl.clone()
     dashboardUrl.pathname = ROUTES.dashboard
     dashboardUrl.search = ""

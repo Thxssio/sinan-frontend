@@ -11,24 +11,6 @@ import {
 
 const optionalTextSchema = z.string().optional();
 
-const yesNoOptions = [
-  { label: "1 - Sim", value: "1" },
-  { label: "2 - Não", value: "2" },
-];
-
-const yesNoIgnoredOptions = [
-  { label: "1 - Sim", value: "1" },
-  { label: "2 - Não", value: "2" },
-  { label: "9 - Ignorado", value: "9" },
-];
-
-const timeUnitOptions = [
-  { label: "1 - Hora", value: "1" },
-  { label: "2 - Dia", value: "2" },
-  { label: "3 - Mês", value: "3" },
-  { label: "4 - Ano", value: "4" },
-];
-
 const sections = [
   {
     id: "patient",

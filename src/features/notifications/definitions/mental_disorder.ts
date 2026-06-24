@@ -367,7 +367,7 @@ const sections = [
 export const mentalDisordersNotificationDefinition = defineNotificationType({
     id: 15,
     slug: "mental_disorder",
-    label: "DTR Transtornos Mentais",
+  label: "DTR - Transtornos Mentais",
     description: `Todo caso de sofrimento emocional em suas diversas formas de manifestação tais como: choro fácil, tristeza, medo excessivo, doenças psicossomáticas, agitação, irritação, nervosismo, ansiedade, taquicardia, sudorese, insegurança, entre outros sintomas que podem indicar o desenvolvimento ou agravo de transtornos mentais, os quais tem como elementos causais fatores de risco relacionados ao trabalho, sejam resultantes da sua organização e gestão ou por exposição a determinados agentes tóxicos.`,
     sections,
 });

@@ -11,6 +11,7 @@ import {
 
 const optionalTextSchema = z.string().optional();
 const optionalNumberSchema = z.number().optional();
+const optionalBooleanSchema = z.boolean().optional();
 
 const serologyOptions = [
   { label: "Reagente", value: "1" },
@@ -593,7 +594,7 @@ const sections = [
 export const congenitalRubellaNotificationDefinition = defineNotificationType({
   id: 100,
   slug: "rubeola-congenita",
-  label: "SÍNDROME DA RUBÉOLA CONGÊNITA",
+  label: "Síndrome da Rubéola Congênita",
   description: `CASO SUSPEITO: Todo recém-nascido cuja mãe foi caso suspeito, confirmado de rubéola ou contato de caso confirmado derubéola, durante a gestação ou;Toda criança até 12 meses de idade que apresente sinais clínicos e compatíveis com infecção congênita pelo vírus da rubéola,independente da história materna.`,
   sections,
 })

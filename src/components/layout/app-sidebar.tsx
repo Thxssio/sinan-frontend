@@ -12,7 +12,7 @@ import {
   Users,
 } from "lucide-react"
 
-import { APP_NAME, ROUTES } from "@/lib/constants"
+import { ROUTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -53,19 +53,15 @@ export function AppSidebar() {
 
   return (
     <aside className="hidden min-h-screen w-64 border-r bg-background lg:block">
-      <div className="flex h-16 items-center gap-3 border-b px-5">
+      <div className="flex h-16 items-center border-b px-5">
         <Image
-          src="/sinan.png"
+          src="/SINAN.png"
           alt="SINAN"
-          width={40}
-          height={38}
-          className="h-10 w-auto object-contain"
+          width={947}
+          height={305}
+          className="h-12 w-auto object-contain"
           priority
         />
-        <div>
-          <p className="text-sm font-semibold">{APP_NAME}</p>
-          <p className="text-xs text-muted-foreground">Vigilancia em saude</p>
-        </div>
       </div>
       <nav className="grid gap-1 p-3">
         {navItems.map((item) => {

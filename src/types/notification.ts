@@ -1,5 +1,3 @@
-import { z } from "zod"
-
 import { notificationTypeDefinitions } from "@/features/notifications/definitions"
 
 export const notificationStatuses = [
@@ -27,27 +25,12 @@ type NotificationBaseFields = {
   notes?: string
 }
 
-export type NotificationFormDataMap = {
-  [Slug in NotificationTypeSlug]: z.infer<
-    NotificationTypeDefinitionMap[Slug]["formSchema"]
-  >
-}
-
-export type NotificationDraftFormDataMap = {
-  [Slug in NotificationTypeSlug]: z.input<
-    NotificationTypeDefinitionMap[Slug]["draftFormSchema"]
-  >
-}
-
-export type NotificationFormData =
-  NotificationFormDataMap[NotificationTypeSlug]
+export type NotificationFormData = Record<string, unknown>
 
 export type NotificationInput = {
-  [Slug in NotificationTypeSlug]: NotificationBaseFields & {
-    notification_type_slug: Slug
-    form_data: NotificationFormDataMap[Slug]
-  }
-}[NotificationTypeSlug]
+  notification_type_slug: NotificationTypeSlug
+  form_data: NotificationFormData
+} & NotificationBaseFields
 
 type NotificationMetadata = {
   id: number

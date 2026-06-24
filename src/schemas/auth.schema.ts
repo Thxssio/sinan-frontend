@@ -5,4 +5,17 @@ export const loginSchema = z.object({
   password: z.string().min(6, "Senha obrigatoria"),
 })
 
+export const registerSchema = z
+  .object({
+    name: z.string().min(3, "Informe seu nome completo"),
+    email: z.string().email("E-mail invalido"),
+    password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+    password_confirmation: z.string().min(6, "Confirme sua senha"),
+  })
+  .refine((values) => values.password === values.password_confirmation, {
+    message: "As senhas nao conferem",
+    path: ["password_confirmation"],
+  })
+
 export type LoginSchema = z.infer<typeof loginSchema>
+export type RegisterSchema = z.infer<typeof registerSchema>

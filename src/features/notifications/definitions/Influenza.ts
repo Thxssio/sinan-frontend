@@ -12,6 +12,12 @@ import {
 const optionalTextSchema = z.string().optional()
 
 const sections = [
+  {
+    id: "case_identification",
+    title: "Identificação do Caso",
+    description: "Dados iniciais da notificação, unidade notificadora e identificação do paciente.",
+    columns: 3,
+    fields: [
       {
         name: "dt_filling",
         label: "Data do preenchimento",
@@ -730,7 +736,7 @@ const sections = [
 export const sragNotificationDefinition = defineNotificationType({
   id: 50,
   slug: "srag",
-  label: "SÍNDROME RESPIRATÓRIA AGUDA GRAVE",
+  label: "Síndrome Respiratória Aguda Grave",
   description: `Vigilância de Influenza por meio de SRAG-Internada ou Óbito por SRAG: indivíduo de qualquer idade, internado com Síndrome Gripal e que apresente Dispneia OU Saturação de O2 <95% OU Desconforto Respiratório.`,
   sections,
 })

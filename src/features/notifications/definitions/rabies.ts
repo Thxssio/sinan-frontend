@@ -6,7 +6,6 @@ import {
     raceColorOptions,
     sexOptions,
     timeUnitOptions,
-    yesNoOptions,
     yesNoUnknownOptions,
     type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared";

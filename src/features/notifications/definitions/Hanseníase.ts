@@ -447,7 +447,7 @@ const sections = [
 export const leprosyNotificationDefinition = defineNotificationType({
   id: 20,
   slug: "hanseniase",
-  label: "HANSENÍASE",
+  label: "Hanseníase",
   description: `Caso confirmado de Hanseníase: pessoa que apresenta uma ou mais das seguintes características e que requer poliquimioterapia: - lesão (ões) de pele com alteração de sensibilidade; acometimento de nervo (s) com espessamento neural; baciloscopia positiva.`,
   sections,
 })

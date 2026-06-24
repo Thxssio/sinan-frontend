@@ -2,9 +2,7 @@ import { z } from "zod";
 
 import {
   defineNotificationType,
-  educationLevelOptions,
-  raceColorOptions,
-  sexOptions,
+  yesNoUnknownOptions,
   type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared"
 
@@ -567,7 +565,7 @@ const sections = [
 export const dtaOutbreakNotificationDefinition = defineNotificationType({
   id: 120,
   slug: "surto-dta",
-  label: "INVESTIGAÇÃO DE SURTO - DTA",
+  label: "Investigação de Surto - DTA",
   description: `Ficha de notificação e acompanhamento para investigação epidemiológica de surtos de Doenças Transmitidas por Alimentos (DTA) no padrão SINAN.`,
   sections,
 })

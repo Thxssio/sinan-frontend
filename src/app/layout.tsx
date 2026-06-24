@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   title: "SINAN | Sistema de Informação de Agravos de Notificação",
   description: "Sistema de Informação de Agravos de Notificação",
   icons: {
-    icon: "/sinan.png",
-    shortcut: "/sinan.png",
-    apple: "/sinan.png",
+    icon: "/SINAN.png",
+    shortcut: "/SINAN.png",
+    apple: "/SINAN.png",
   },
 };
 

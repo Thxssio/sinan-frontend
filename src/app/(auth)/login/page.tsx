@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react"
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { AlertCircle, Eye, EyeOff } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
@@ -15,7 +16,7 @@ import { getApiErrorMessage } from "@/services/api"
 
 const MINISTRY_LOGO_URL =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuC7o_Dqdz-IHCH-nds0X9yfCLX-jjs3D7eAyN0LnODWkThIZ22M4qzGk-QYlqwt5Qg-mU2IfvwNG_ZjSZ_D_a9L6SCfaIV81xh9Y_WA5a7o3op9q9JwaIkLacvjoFH8DHYa20Okg3rwfDGeiKW7lNWOjvADbFOtOeVEJG2kSBDYynXaIQElqLdFPeHmMjaGV7Bm2GewO8ENrgPuFELD_MBmHspstNWJGb-pFx1AvXwckwzfzFcdVM7kN20xdi57MU4-lx_YaKBuZKI"
-const SINAN_LOGO_URL = "/sinan.png"
+const SINAN_LOGO_URL = "/SINAN.png"
 
 const pageStyle: CSSProperties = {
   background:
@@ -62,8 +63,8 @@ export default function LoginPage() {
             className="mx-auto mb-4 h-16 w-auto object-contain"
             alt="SINAN"
             src={SINAN_LOGO_URL}
-            width={164}
-            height={154}
+            width={947}
+            height={305}
             priority
           />
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
@@ -173,6 +174,16 @@ export default function LoginPage() {
                 Entrar com gov.br
               </button>
             </div>
+
+            <p className="text-center text-sm text-muted-foreground">
+              Ainda nao tem acesso?{" "}
+              <Link
+                className="font-semibold text-brand transition-colors hover:text-brand-hover"
+                href={ROUTES.register}
+              >
+                Criar cadastro
+              </Link>
+            </p>
           </form>
         </section>
 

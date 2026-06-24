@@ -10,7 +10,14 @@ import { InputField } from "@/components/forms/input-field"
 import { SelectField } from "@/components/forms/select-field"
 import { TextareaField } from "@/components/forms/textarea-field"
 import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useCreatePatient, usePatients } from "@/hooks/use-patients"
 import { useUnits } from "@/hooks/use-units"
@@ -682,6 +689,29 @@ export function NotificationForm({
                         control={form.control}
                         name={name}
                         label={field.label}
+                      />
+                    ) : field.kind === "checkbox" ? (
+                      <FormField
+                        control={form.control}
+                        name={name}
+                        render={({ field: checkboxField }) => (
+                          <FormItem className="flex min-h-8 items-center gap-3 rounded-lg border border-border px-3 py-2">
+                            <FormControl>
+                              <input
+                                className="size-4 rounded border-border accent-brand"
+                                type="checkbox"
+                                checked={!!checkboxField.value}
+                                onChange={(event) =>
+                                  checkboxField.onChange(event.target.checked)
+                                }
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal">
+                              {field.label}
+                            </FormLabel>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     ) : (
                       <InputField

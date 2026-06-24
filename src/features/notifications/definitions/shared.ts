@@ -6,6 +6,7 @@ export type NotificationFieldKind =
   | "date"
   | "number"
   | "select"
+  | "checkbox"
 
 export type NotificationFieldOption = {
   label: string

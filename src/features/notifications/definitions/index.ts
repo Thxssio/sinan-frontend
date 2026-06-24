@@ -4,6 +4,16 @@ import { antiRabiesNotificationDefinition } from "@/features/notifications/defin
 import { botulismNotificationDefinition } from "@/features/notifications/definitions/botulism"
 import { choleraNotificationDefinition } from "@/features/notifications/definitions/cholera"
 import { chikungunyaFeverNotificationDefinition } from "@/features/notifications/definitions/Febre-de-Chikungunya"
+import { leprosyNotificationDefinition } from "@/features/notifications/definitions/Hanseníase"
+import { hantavirusNotificationDefinition } from "@/features/notifications/definitions/Hantavirose"
+import { viralHepatitisNotificationDefinition } from "@/features/notifications/definitions/Hepatites Virais"
+import { sragNotificationDefinition } from "@/features/notifications/definitions/Influenza"
+import { exogenousPoisoningNotificationDefinition } from "@/features/notifications/definitions/Intoxicação Exógena"
+import { exanthematicFeversNotificationDefinition } from "@/features/notifications/definitions/Sarampo"
+import { dtaOutbreakNotificationDefinition } from "@/features/notifications/definitions/Surto Doenças Transmitidas por Alimentos - DTA"
+import { congenitalSyphilisNotificationDefinition } from "@/features/notifications/definitions/Sífilis Congênita"
+import { pregnantSyphilisNotificationDefinition } from "@/features/notifications/definitions/Sífilis em Gestante"
+import { congenitalRubellaNotificationDefinition } from "@/features/notifications/definitions/Síndrome da Rubéola Congênita"
 import { dengueChikungunyaNotificationDefinition } from "@/features/notifications/definitions/dengue"
 import { epizootyNotificationDefinition } from "@/features/notifications/definitions/epizootia"
 import { schistosomiasisNotificationDefinition } from "@/features/notifications/definitions/esquistossomose"
@@ -23,6 +33,7 @@ import { plagueNotificationDefinition } from "@/features/notifications/definitio
 import { polioNotificationDefinition } from "@/features/notifications/definitions/polio"
 import { genericNotificationDefinition } from "@/features/notifications/definitions/generic"
 import { individualNotificationDefinition } from "@/features/notifications/definitions/individual"
+import { outbreakNotificationDefinition } from "@/features/notifications/definitions/surto"
 export {
   aidsChildrenNotificationDefinition,
   aidsNotificationDefinition,
@@ -30,9 +41,16 @@ export {
   botulismNotificationDefinition,
   chikungunyaFeverNotificationDefinition,
   choleraNotificationDefinition,
+  congenitalRubellaNotificationDefinition,
+  congenitalSyphilisNotificationDefinition,
   dengueChikungunyaNotificationDefinition,
+  dtaOutbreakNotificationDefinition,
   epizootyNotificationDefinition,
+  exanthematicFeversNotificationDefinition,
+  exogenousPoisoningNotificationDefinition,
   schistosomiasisNotificationDefinition,
+  hantavirusNotificationDefinition,
+  leprosyNotificationDefinition,
   yellowFeverNotificationDefinition,
   venomousAnimalNotificationDefinition,
   whoopingCoughNotificationDefinition,
@@ -48,7 +66,11 @@ export {
   plagueNotificationDefinition,
   polioNotificationDefinition,
   genericNotificationDefinition,
-  individualNotificationDefinition
+  individualNotificationDefinition,
+  outbreakNotificationDefinition,
+  pregnantSyphilisNotificationDefinition,
+  sragNotificationDefinition,
+  viralHepatitisNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
@@ -57,6 +79,16 @@ export const notificationTypeDefinitionList = [
   aidsNotificationDefinition,
   venomousAnimalNotificationDefinition,
   botulismNotificationDefinition,
+  leprosyNotificationDefinition,
+  hantavirusNotificationDefinition,
+  viralHepatitisNotificationDefinition,
+  sragNotificationDefinition,
+  exogenousPoisoningNotificationDefinition,
+  exanthematicFeversNotificationDefinition,
+  dtaOutbreakNotificationDefinition,
+  congenitalSyphilisNotificationDefinition,
+  pregnantSyphilisNotificationDefinition,
+  congenitalRubellaNotificationDefinition,
   epizootyNotificationDefinition,
   schistosomiasisNotificationDefinition,
   yellowFeverNotificationDefinition,
@@ -77,7 +109,8 @@ export const notificationTypeDefinitionList = [
   plagueNotificationDefinition,
   polioNotificationDefinition,
   genericNotificationDefinition,
-  individualNotificationDefinition
+  individualNotificationDefinition,
+  outbreakNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
@@ -85,6 +118,16 @@ export const notificationTypeDefinitions = {
   aids: aidsNotificationDefinition,
   venomous_animal: venomousAnimalNotificationDefinition,
   botulism: botulismNotificationDefinition,
+  hanseniase: leprosyNotificationDefinition,
+  hantavirose: hantavirusNotificationDefinition,
+  "hepatites-virais": viralHepatitisNotificationDefinition,
+  srag: sragNotificationDefinition,
+  "intoxicacao-exogena": exogenousPoisoningNotificationDefinition,
+  "doencas-exantematicas": exanthematicFeversNotificationDefinition,
+  "surto-dta": dtaOutbreakNotificationDefinition,
+  "sifilis-congenita": congenitalSyphilisNotificationDefinition,
+  "sifilis-gestante": pregnantSyphilisNotificationDefinition,
+  "rubeola-congenita": congenitalRubellaNotificationDefinition,
   epizooty: epizootyNotificationDefinition,
   schistosomiasis: schistosomiasisNotificationDefinition,
   yellow_fever: yellowFeverNotificationDefinition,
@@ -105,5 +148,6 @@ export const notificationTypeDefinitions = {
   plague: plagueNotificationDefinition,
   polio: polioNotificationDefinition,
   generic: genericNotificationDefinition,
-  individual: individualNotificationDefinition
+  individual: individualNotificationDefinition,
+  surto: outbreakNotificationDefinition
 } as const

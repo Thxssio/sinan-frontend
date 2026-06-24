@@ -866,7 +866,7 @@ const sections = [
 export const exogenousPoisoningNotificationDefinition = defineNotificationType({
   id: 60,
   slug: "intoxicacao-exogena",
-  label: "INTOXICAÇÃO EXÓGENA",
+  label: "Intoxicação Exógena",
   description: `Caso suspeito: todo aquele indivíduo que, tendo sido exposto a substâncias químicas, apresente sinais e sintomas clínicos de intoxicação e/ou alterações laboratoriais provavelmente ou possivelmente compatíveis.`,
   sections,
 })

@@ -8,7 +8,7 @@ import {
   ROUTES,
 } from "@/lib/constants"
 import { authService } from "@/services/auth.service"
-import type { LoginCredentials } from "@/types/auth"
+import type { LoginCredentials, RegisterCredentials } from "@/types/auth"
 import type { User } from "@/types/user"
 
 type AuthContextValue = {
@@ -16,6 +16,7 @@ type AuthContextValue = {
   isAuthenticated: boolean
   isLoading: boolean
   login: (credentials: LoginCredentials) => Promise<void>
+  register: (credentials: RegisterCredentials) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -50,20 +51,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false)
   }, [])
 
+  const persistSession = React.useCallback((response: { token: string; user: User }) => {
+    window.localStorage.setItem(AUTH_TOKEN_KEY, response.token)
+    window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(response.user))
+    setAuthCookie(response.token)
+    setUser(response.user)
+  }, [])
+
   const login = React.useCallback(async (credentials: LoginCredentials) => {
     setIsLoading(true)
 
     try {
       const response = await authService.login(credentials)
-
-      window.localStorage.setItem(AUTH_TOKEN_KEY, response.token)
-      window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(response.user))
-      setAuthCookie(response.token)
-      setUser(response.user)
+      persistSession(response)
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [persistSession])
+
+  const register = React.useCallback(
+    async (credentials: RegisterCredentials) => {
+      setIsLoading(true)
+
+      try {
+        const response = await authService.register(credentials)
+        persistSession(response)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [persistSession]
+  )
 
   const logout = React.useCallback(async () => {
     setIsLoading(true)
@@ -83,9 +101,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthenticated: !!user,
       isLoading,
       login,
+      register,
       logout,
     }),
-    [isLoading, login, logout, user]
+    [isLoading, login, logout, register, user]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

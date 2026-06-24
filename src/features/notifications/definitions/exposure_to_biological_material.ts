@@ -5,7 +5,6 @@ import {
     educationLevelOptions,
     raceColorOptions,
     sexOptions,
-    yesNoUnknownOptions,
     type NotificationSectionDefinition,
 } from "@/features/notifications/definitions/shared";
 
@@ -481,7 +480,7 @@ const sections = [
 export const biologicalMaterialExposureNotificationDefinition = defineNotificationType({
     id: 11,
     slug: "biological_material_exposure",
-    label: "Acidente de Trabalho com Exposição à Material Biológico",
+  label: "Acidente de Trabalho com Exposição a Material Biológico",
     description: `Todo caso de acidente de trabalho ocorrido com quaisquer categorias profissionais, envolvendo exposição direta ou indireta do trabalhador a material biológico (orgânico) potencialmente contaminado por patógenos (vírus, bactérias, fungos, príons e protozoários), por meio de material perfuro-cortante ou não.`,
     sections,
 });

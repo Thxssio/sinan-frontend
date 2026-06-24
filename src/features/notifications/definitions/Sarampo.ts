@@ -785,7 +785,7 @@ const sections = [
 export const exanthematicFeversNotificationDefinition = defineNotificationType({
   id: 70,
   slug: "doencas-exantematicas",
-  label: "DOENÇAS EXANTEMÁTICAS FEBRIS",
+  label: "Doenças Exantemáticas Febris",
   description: `CASO SUSPEITO DE SARAMPO: Todo paciente que apresentar febre e exantema maculopapular, acompanhados de um ou maisdos seguintes sinais e sintomas: tosse e/ou coriza e/ou conjuntivite, independente da idade e da situação vacinal.CASO SUSPEITO DE RUBÉOLA: Todo paciente que apresente febre e exantema maculopapular, acompanhado delinfoadenopatia retroaurícular, occipital e cervical, independente da idade e da situação vacinal.`,
   sections,
 })

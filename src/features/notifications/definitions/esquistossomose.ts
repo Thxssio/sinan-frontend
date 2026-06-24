@@ -417,7 +417,7 @@ const sections = [
 export const schistosomiasisNotificationDefinition = defineNotificationType({
   id: 5,
   slug: "schistosomiasis",
-  label: "ESQUISTOSSOMOSE",
+  label: "Esquistossomose",
   description: `Caso CONFIRMADO: Todo indivíduo que apresente ovos viáveis de Schistosoma mansoni nas fezes ou em tecido submetido à biópsia.`,
   sections,
 });

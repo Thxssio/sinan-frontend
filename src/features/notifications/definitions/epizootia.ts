@@ -496,7 +496,7 @@ const sections = [
 export const epizootyNotificationDefinition = defineNotificationType({
   id: 4,
   slug: "epizooty",
-  label: "EPIZOOTIA",
+  label: "Epizootia",
   description: `Definição do caso: Animal ou grupo de animais encontrados doentes e/ou mortos, incluindo ossadas, sem causa definida, que podem preceder a ocorrência de doenças em humanos.`,
   sections,
 })

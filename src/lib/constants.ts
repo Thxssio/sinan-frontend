@@ -6,6 +6,7 @@ export const AUTH_USER_KEY = "sinan.user"
 export const ROUTES = {
   home: "/",
   login: "/login",
+  register: "/cadastro",
   dashboard: "/dashboard",
   notifications: "/notifications",
   patients: "/patients",

@@ -1,6 +1,10 @@
 import { USE_MOCKS } from "@/lib/constants"
 import { api } from "@/services/api"
-import type { AuthResponse, LoginCredentials } from "@/types/auth"
+import type {
+  AuthResponse,
+  LoginCredentials,
+  RegisterCredentials,
+} from "@/types/auth"
 import type { User } from "@/types/user"
 
 const mockUser: User = {
@@ -24,6 +28,23 @@ export const authService = {
     }
 
     const response = await api.post<AuthResponse>("/auth/login", credentials)
+    return response.data
+  },
+
+  async register(credentials: RegisterCredentials) {
+    if (USE_MOCKS) {
+      return {
+        token: "mock-token",
+        user: {
+          ...mockUser,
+          id: Date.now(),
+          name: credentials.name,
+          email: credentials.email,
+        },
+      } satisfies AuthResponse
+    }
+
+    const response = await api.post<AuthResponse>("/auth/register", credentials)
     return response.data
   },
 
